@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 const blogSchema = mongoose.Schema(
   {
-    imageUrl: {
+    coverImage: {
       type: String,
+      required: true
     },
     title: {
       type: String,
@@ -21,5 +22,5 @@ const blogSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const blogModal = mongoose.model('blog', blogSchema);
+const blogModal = mongoose.model('Blog', blogSchema);
 module.exports = blogModal;

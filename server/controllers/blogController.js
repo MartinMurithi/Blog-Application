@@ -1,20 +1,23 @@
 const blogModel = require("../models/blog");
-const { default: mongoose } = require("mongoose");
+const { mongoose } = require("mongoose");
 
 // Create a blog
 const postBlog = async (req, res) => {
   try {
-    const blog = await blogModel.create({ ...req.body });
-    // await blog.save();
+    const blog = new blogModel({
+      coverImage: req.file.path,
+      title: req.body.title,
+      categories: req.body.categories,
+      content: req.body.content,
+    });
+    await blog.save();
     res.status(201).json({
-      success: true,
-      data: blog,
+      message: "Blog created successfully",
+      blog: blog,
     });
   } catch (err) {
     res.status(500).json({
-      success: false,
-      status: err.status,
-      error: err.message,
+      message: err.message,
     });
   }
 };
@@ -22,16 +25,17 @@ const postBlog = async (req, res) => {
 // Fetch all articles
 const getBlogs = async (req, res) => {
   try {
-    const blogs = await blogModel.find({}).sort({ createdAt: -1 });
+    const blogs = await blogModel
+      .find({})
+      .select("-__v")
+      .sort({ createdAt: -1 });
     res.status(200).json({
-      success: true,
-      data: blogs,
+      count: blogs.length,
+      blogs: blogs,
     });
   } catch (err) {
-    res.status(200).json({
-      success: false,
-      status: err.status,
-      error: err.message,
+    res.status(500).json({
+      message: err.message,
     });
   }
 };
@@ -41,16 +45,16 @@ const getOneBlog = async (req, res) => {
   try {
     const { id: _id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(_id))
-      return ressend(`Article with ${_id} does not exist`);
-    const blog = await blogModel.findOne(id);
+      return res.status(500).json({ message: `${_id} is not a valid id` });
+    const blog = await blogModel.findById(_id).select("-__v");
     res.status(200).json({
-      success: true,
-      data: blog,
+      blog: blog,
     });
+    if (!blog) {
+      return res.status(404).json({ message: `Blog does not exist` });
+    }
   } catch (err) {
-    res.json({
-      success: false,
-      status: err.status,
+    res.status(500).json({
       message: err.message,
     });
   }
@@ -58,49 +62,59 @@ const getOneBlog = async (req, res) => {
 
 const updateBlog = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id: _id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(500).json({ message: `${_id} is not a valid id` });
+    }
+
     const blog = await blogModel.findByIdAndUpdate(
-      { _id: id, ...req.body },
-      { new: true }
+      _id,
+      {
+        coverImage: req.file.path,
+        title: req.body.title,
+        categories: req.body.categories,
+        content: req.body.content,
+      },
+      {
+        new: true,
+      }
     );
+    res.status(200).json({
+      message: "Blog updated successfully",
+      blog: blog,
+    });
+
     if (!blog) {
-      res.status(404).json({
-        success: false,
+      return res.status(404).json({
         message: "Blog not found!",
       });
     }
-    res.status(200).json({
-      success: true,
-      data: blog,
-    });
   } catch (err) {
     res.json({
-      success: false,
-      status: err.status,
-      error: err.message,
+      message: err.message,
     });
   }
 };
 
 const deleteBlog = async (req, res) => {
   try {
-    const { id } = req.params;
-    const blog = await blogModel.findByIdAndDelete({ _id: id });
+    const { id: _id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(500).json({ message: `${_id} is not a valid id` });
+
+    const blog = await blogModel.findByIdAndDelete(_id);
+    res.status(200).json({
+      message: "Blog deleted successfully",
+      blog: blog,
+    });
     if (!blog) {
-      res.status(404).json({
-        success: false,
+      return res.status(404).json({
         message: "Blog not found!",
       });
     }
-    res.status(200).json({
-      success: true,
-      data: blog,
-    });
   } catch (err) {
     res.status(500).json({
-      success: false,
-      status: err.status,
-      error: err.message,
+      message: err.message,
     });
   }
 };

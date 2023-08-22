@@ -24,6 +24,5 @@ app.all("*", (req, res) => {
 });
 
 mongoose.connection.once("open", () => {
-  console.log("DB connected successfully");
   app.listen(PORT, () => console.log("Server is running"));
 });

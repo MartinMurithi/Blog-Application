@@ -34,7 +34,7 @@ function Write() {
     <>
       {/* Title section */}
       <article className="font-serif mt-2 py-20 md:container md:mx-auto md:shadow-lg md:max-w-[60%]">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType= ''>
           {/* Cover image */}
           <div className="flex flex-col py-2 px-3">
             <label htmlFor="coverImg" className="text-lg md:text-xl mb-2">
@@ -43,8 +43,7 @@ function Write() {
             <input
               type="file"
               accept="image/*"
-              name="coverImg"
-              value={coverImg}
+              name="coverImage"
               onChange={(e) => setCoverImg(e.target.value)}
               id="coverImg"
               className="mt-3 bg-veryLightGray cursor-pointer"
