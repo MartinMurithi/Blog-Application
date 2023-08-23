@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-    @variants responsive {
+    @utilities responsive {
       /* Hide scrollbar for Chrome, Safari and Opera */
       .no-scrollbar::-webkit-scrollbar {
           display: none;

@@ -7,7 +7,7 @@ const postBlog = async (req, res) => {
     const blog = new blogModel({
       coverImage: req.file.path,
       title: req.body.title,
-      categories: req.body.categories,
+      categories: JSON.parse(req.body.categories),
       content: req.body.content,
     });
     await blog.save();

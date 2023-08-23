@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const cors = require('cors');
 const routes = require("./routes/blogRoute");
 const dbConnect = require("./config/dbConnect");
 const PORT = process.env.PORT || 4000;
@@ -9,7 +10,9 @@ const app = express();
 
 dbConnect();
 app.use(express.json());
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", routes);
 
 app.all("*", (req, res) => {
