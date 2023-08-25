@@ -86,6 +86,7 @@ function Write() {
             name="category"
             placeholder={"Select upto 5 categories"}
             closeMenuOnSelect={false}
+            closeMenuOnScroll={false}
             components={animatedSelectComponent}
             isMulti
             isSearchable
@@ -94,7 +95,7 @@ function Write() {
             value={categories}
             backspaceRemovesValue
             hideSelectedOptions
-            isOptionDisabled={() => categories.length >= 5}
+            isOptionDisabled={() => categories.length >= 3}
             onChange={handleSelectChange}
             className="px-4 py-4"
           />

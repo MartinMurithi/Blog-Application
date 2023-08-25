@@ -4,7 +4,7 @@ export default {
   theme: {
     screens: {
       sm: "480px",
-      md: "768px",
+      md: "738px",
       lg: "976px",
       xl: "1440px",
     },
@@ -20,6 +20,9 @@ export default {
       },
       height: {
         "imgHeaderHeight" : "85vh"
+      },
+      borderRadius: {
+        'radius': '40%'
       }
     },
   },
