@@ -12,6 +12,7 @@ function Write() {
 
   const [coverImage, setCoverImage] = useState("");
   const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
   const [categories, setCategories] = useState([]);
   const [content, setContent] = useState("");
 
@@ -19,16 +20,10 @@ function Write() {
     setCategories(options);
   };
 
-  const article = {
-    coverImage: coverImage,
-    title: title,
-    categories: categories,
-    content: content,
-  };
-
   const postData = async () => {
     const formData = new FormData();
     formData.append("title", title);
+    formData.append("summary", summary);
     formData.append("categories", JSON.stringify(categories));
     formData.append("content", content);
     formData.append("coverImage", coverImage);
@@ -52,7 +47,7 @@ function Write() {
   return (
     <>
       {/* Title section */}
-      <article className="font-serif mt-2 py-20 md:container md:mx-auto md:shadow-lg md:max-w-[60%]">
+      <article className="font-serif mt-2 py-10 md:container md:mx-auto md:shadow-lg md:max-w-[60%]">
         <form onSubmit={handleSubmit} encType="">
           {/* Cover image */}
           <div className="flex flex-col py-2 px-3">
@@ -78,8 +73,20 @@ function Write() {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="no-scrollbar mt-6 font-bold text-2xl tracking-wide outline-[transparent] placeholder:text-black md:placeholder:text-2xl"
+              className="no-scrollbar bg-gray-100 p-2 mt-6 font-bold text-2xl tracking-wide outline-[transparent] placeholder:text-black md:placeholder:text-2xl"
             />
+
+            {/* Summary input */}
+            <textarea
+              name="summary"
+              id="summary"
+              rows="4"
+              required
+              value={summary}
+              onChange={(e)=>setSummary(e.target.value)}
+              placeholder="Add summary"
+              className="no-scrollbar bg-gray-100 mt-6 p-2 text-lg tracking-wide outline-[transparent] placeholder:text-black md:placeholder:text-xl"
+            ></textarea>
           </div>
           {/* Select article category */}
           <Select

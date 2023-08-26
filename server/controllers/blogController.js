@@ -7,6 +7,7 @@ const postBlog = async (req, res) => {
     const blog = new blogModel({
       coverImage: req.file.path,
       title: req.body.title,
+      summary: req.body.summary,
       categories: JSON.parse(req.body.categories),
       content: req.body.content,
     });
@@ -72,11 +73,12 @@ const updateBlog = async (req, res) => {
       {
         coverImage: req.file.path,
         title: req.body.title,
+        summary: req.body.summary,
         categories: req.body.categories,
         content: req.body.content,
       },
       {
-        new: true,
+        new: true
       }
     );
     res.status(200).json({

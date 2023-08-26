@@ -10,6 +10,9 @@ const blogSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    summary: {
+      type: String
+    },
     categories: {
       type: Array,
       rewuired: true,
