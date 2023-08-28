@@ -6,16 +6,21 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { categoryOptions } from "../Components/CategoryData";
 import axios from "axios";
+import { useCreateArticleMutation } from "../redux/api/apiSlice";
 
 function Write() {
   const animatedSelectComponent = makeAnimated();
 
+  const [createArticleHanddler] = useCreateArticleMutation();
+  
   const [coverImage, setCoverImage] = useState("");
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [categories, setCategories] = useState([]);
   const [content, setContent] = useState("");
+  const [article, setArticle] = useState();
 
+  
   const handleSelectChange = (options) => {
     setCategories(options);
   };
@@ -27,21 +32,12 @@ function Write() {
     formData.append("categories", JSON.stringify(categories));
     formData.append("content", content);
     formData.append("coverImage", coverImage);
-    try {
-      const data = await axios.post(
-        "http://localhost:5000/blogr.io/api/v1/write",
-        formData
-      );
-      console.log(data);
-    } catch (err) {
-      console.error(err);
-    }
+
+    createArticleHanddler(formData);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     postData();
-    console.log(`Blog created successfully`);
-    console.log(article);
   };
 
   return (
@@ -81,7 +77,6 @@ function Write() {
               name="summary"
               id="summary"
               rows="4"
-              required
               value={summary}
               onChange={(e)=>setSummary(e.target.value)}
               placeholder="Add summary"
@@ -102,7 +97,7 @@ function Write() {
             value={categories}
             backspaceRemovesValue
             hideSelectedOptions
-            isOptionDisabled={() => categories.length >= 3}
+            isOptionDisabled={() => categories.length >= 5}
             onChange={handleSelectChange}
             className="px-4 py-4"
           />
@@ -120,7 +115,7 @@ function Write() {
             className="bg-green rounded-sm px-6 py-2 text-white text-sm ml-3 md:px-8"
           >
             Publish
-          </button>{" "}
+          </button>
         </form>
       </article>
     </>

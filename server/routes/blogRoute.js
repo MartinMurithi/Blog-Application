@@ -18,13 +18,13 @@ routes.post(
   postBlog
 );
 routes.get("/blogr.io/api/v1/articles", getBlogs);
-routes.get("/blogr.io/api/v1/articles/:id", getOneBlog);
+routes.get("/blogr.io/api/v1/article/:id", getOneBlog);
 routes.patch(
-  "/blogr.io/api/v1/update/:id",
+  "/blogr.io/api/v1/article/update/:id",
   upload.single("coverImage"),
   fileSizeLimitErrorHandler,
   updateBlog
 );
-routes.delete("/blogr.io/api/v1/delete/:id", deleteBlog);
+routes.delete("/blogr.io/api/v1/article/delete/:id", deleteBlog);
 
 module.exports = routes;
