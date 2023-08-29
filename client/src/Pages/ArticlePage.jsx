@@ -1,5 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 import ProfileModal from "../Components/ProfileModal";
 import { useGetOneArticleQuery } from "../redux/api/apiSlice";
 import FeedBackUtils from "../Components/FeedBackUtils";
@@ -17,12 +19,11 @@ function ArticlePage() {
 
   return (
     <article className="w-[100%] px-2 my-8 font-serif md:container md:mx-auto md:w-[60%] md:my-14">
+      {isError && <p>{error.message}</p>}
+      {isFetching || isLoading  }
       <section>
-        {isFetching || (isLoading && <p>Loading...</p>)}
-        {isError && <p>{error.message}</p>}
-
         <h1 className="text-2xl leading-10 font-bold  md:text-3xl">
-          {article?.blog?.title}
+          {article?.blog?.title || <Skeleton count={2}/>}
         </h1>
         <ProfileModal />
       </section>
