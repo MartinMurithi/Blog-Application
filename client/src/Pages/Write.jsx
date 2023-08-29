@@ -5,7 +5,6 @@ import "react-quill/dist/quill.snow.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { categoryOptions } from "../Components/CategoryData";
-import axios from "axios";
 import { useCreateArticleMutation } from "../redux/api/apiSlice";
 
 function Write() {
@@ -18,8 +17,6 @@ function Write() {
   const [summary, setSummary] = useState("");
   const [categories, setCategories] = useState([]);
   const [content, setContent] = useState("");
-  const [article, setArticle] = useState();
-
   
   const handleSelectChange = (options) => {
     setCategories(options);
