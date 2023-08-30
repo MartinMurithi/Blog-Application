@@ -3,19 +3,18 @@ const mongoose = require("mongoose");
 const blogSchema = mongoose.Schema(
   {
     coverImage: {
-      type: String,
-      required: true
+      type: String
     },
     title: {
       type: String,
-      required: true,
+      required: [true, "Title is required"],
     },
     summary: {
       type: String
     },
     categories: {
       type: Array,
-      rewuired: true,
+      rewuired: [true, "Atleast on categoery is required"],
     },
     content: {
       type: String,

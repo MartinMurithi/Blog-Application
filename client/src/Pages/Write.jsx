@@ -10,16 +10,31 @@ import { useCreateArticleMutation } from "../redux/api/apiSlice";
 function Write() {
   const animatedSelectComponent = makeAnimated();
 
-  const [createArticleHanddler] = useCreateArticleMutation();
-  
+  const [createArticleHandler, { error }] = useCreateArticleMutation();
+
+  const [coverImagePreview, setCoverImagePreview] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [categories, setCategories] = useState([]);
   const [content, setContent] = useState("");
-  
+
   const handleSelectChange = (options) => {
     setCategories(options);
+  };
+
+  const handleImagechange = (e) => {
+    const selectedFile = e.target.files[0];
+    setCoverImage(e.target.files[0]);
+
+    if (selectedFile) {
+      setCoverImage(selectedFile);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setCoverImagePreview(e.target.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const postData = async () => {
@@ -30,30 +45,46 @@ function Write() {
     formData.append("content", content);
     formData.append("coverImage", coverImage);
 
-    createArticleHanddler(formData);
+    try {
+      createArticleHandler(formData);
+    } catch (error) {
+      throw error;
+    }
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    postData();
+    try {
+      await postData();
+      console.log("Article created successfully");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
       {/* Title section */}
-      <article className="font-serif mt-2 py-10 md:container md:mx-auto md:shadow-lg md:max-w-[60%]">
+      <article className="font-serif mt-2 py-10 md:container md:mx-auto md:shadow-lg md:max-w-[70%]">
         <form onSubmit={handleSubmit} encType="">
           {/* Cover image */}
           <div className="flex flex-col py-2 px-3">
+            {coverImagePreview && (
+              <img
+                src={coverImagePreview}
+                alt="Preview"
+                className="w-[50%] my-3"
+              />
+            )}
             <label htmlFor="coverImg" className="text-lg md:text-xl mb-2">
               Add a cover image
             </label>
             <input
               type="file"
-              accept="image/png, image/jpeg, image/jpg"
+              accept="image/png, image/jpeg, image/jpg, image/avif, image/webp"
               name="coverImage"
-              onChange={(e) => setCoverImage(e.target.files[0])}
+              onChange={handleImagechange}
               id="coverImg"
-              className="mt-3 bg-veryLightGray cursor-pointer"
+              className="mt-3 w-24 cursor-pointer"
             />
 
             {/* Artcile title */}
@@ -75,7 +106,7 @@ function Write() {
               id="summary"
               rows="4"
               value={summary}
-              onChange={(e)=>setSummary(e.target.value)}
+              onChange={(e) => setSummary(e.target.value)}
               placeholder="Add summary"
               className="no-scrollbar bg-gray-100 mt-6 p-2 text-lg tracking-wide outline-[transparent] placeholder:text-black md:placeholder:text-xl"
             ></textarea>

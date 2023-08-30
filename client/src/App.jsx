@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <SkeletonTheme baseColor="#fafafa" highlightColor="#444">
+      <SkeletonTheme baseColor="#e6eaf2" highlightColor="#f0f0f0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />

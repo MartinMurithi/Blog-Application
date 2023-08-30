@@ -3,15 +3,18 @@ const maxFileSize = 1024 * 1024 * 3;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    if (!file) return;
     cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
+    if (!file) return;
     const uniqueName = `${Date.now()}-${file.originalname}`;
     cb(null, uniqueName);
   },
 });
 
 const fileFilter = (req, file, cb) => {
+  if (!file) return;
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/webp") {
     cb(null, true);
   } else {
