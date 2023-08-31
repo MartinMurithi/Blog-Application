@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ProfileModal from "../Components/ProfileModal";
 import { useGetOneArticleQuery } from "../redux/api/apiSlice";
@@ -19,7 +19,7 @@ function ArticlePage() {
 
   return (
    <article className="w-[100%] px-2 my-8 font-serif md:container md:mx-auto md:w-[60%] md:my-14">
-      {isError && <p>{error.message}</p>}
+      {isError && <p>{error?.data?.message}</p>}
       {isLoading || isFetching ? (
         <>
           <Skeleton count={1} height={'50px'} />

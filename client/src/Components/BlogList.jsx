@@ -14,7 +14,7 @@ function BlogList() {
 
   return (
     <>
-      {isError ? <p>{error.message}</p> : null}
+      {isError ? <p>{error?.data?.message}</p> : null}
       {isFetching || isLoading ? <p>Loading...</p> : null}
 
       {isSuccess && articles.length !== 0

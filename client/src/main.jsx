@@ -7,11 +7,11 @@ import App from "./App.jsx";
 import "./styles/tailwind.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ApiProvider api={blogrApi}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </ApiProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

@@ -9,10 +9,13 @@ import RegisterOptions from "./Pages/RegisterOptions";
 import NavBar from "./Components/NavBar";
 import SignInOptions from "./Pages/SignInOptions";
 import { SkeletonTheme } from "react-loading-skeleton";
+import {ToastContainer} from "react-toastify";
+  import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-    <>
+    <div>
+      <ToastContainer style={{width : 'auto'}}/>
       <NavBar />
       <SkeletonTheme baseColor="#e6eaf2" highlightColor="#f0f0f0">
         <Routes>
@@ -25,7 +28,8 @@ function App() {
           <Route path="/register" element={<RegisterOptions />} />
         </Routes>
       </SkeletonTheme>
-    </>
+      
+    </div>
   );
 }
 

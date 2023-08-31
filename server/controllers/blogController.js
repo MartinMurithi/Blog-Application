@@ -4,6 +4,9 @@ const { mongoose } = require("mongoose");
 // Create a blog
 const postBlog = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Cover image is required" });
+    }
     const blog = new blogModel({
       coverImage: req.file.path,
       title: req.body.title,
@@ -68,6 +71,9 @@ const updateBlog = async (req, res) => {
       return res.status(500).json({ message: `${_id} is not a valid id` });
     }
 
+    if (!req.file) {
+      return res.status(400).json({ message: "Cover image is required" });
+    }
     const blog = await blogModel.findByIdAndUpdate(
       _id,
       {
@@ -78,7 +84,7 @@ const updateBlog = async (req, res) => {
         content: req.body.content,
       },
       {
-        new: true
+        new: true,
       }
     );
     res.status(200).json({
