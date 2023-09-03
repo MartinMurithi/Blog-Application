@@ -1,5 +1,5 @@
 const express = require("express");
-const routes = express.Router();
+const router = express.Router();
 
 const {
   postBlog,
@@ -11,20 +11,20 @@ const {
 const upload = require("../config/multer");
 const fileSizeLimitErrorHandler = require("../middlewares/multerFileSize");
 
-routes.post(
+router.post(
   "/blogr.io/api/v1/write",
   upload.single("coverImage"),
   fileSizeLimitErrorHandler,
   postBlog
 );
-routes.get("/blogr.io/api/v1/articles", getBlogs);
-routes.get("/blogr.io/api/v1/article/:id", getOneBlog);
-routes.patch(
+router.get("/blogr.io/api/v1/articles", getBlogs);
+router.get("/blogr.io/api/v1/article/:id", getOneBlog);
+router.patch(
   "/blogr.io/api/v1/article/update/:id",
   upload.single("coverImage"),
   fileSizeLimitErrorHandler,
   updateBlog
 );
-routes.delete("/blogr.io/api/v1/article/delete/:id", deleteBlog);
+router.delete("/blogr.io/api/v1/article/delete/:id", deleteBlog);
 
-module.exports = routes;
+module.exports = router;

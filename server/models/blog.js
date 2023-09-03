@@ -15,7 +15,7 @@ const blogSchema = mongoose.Schema(
     },
     categories: {
       type: Array,
-      rewuired: [true, "Atleast on categoery is required"],
+      required: [true, "Atleast on categoery is required"],
     },
     content: {
       type: String,
