@@ -50,6 +50,7 @@ function Write() {
     formData.append("coverImage", coverImage);
 
     await createArticleHandler(formData);
+    console.log(formData);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
