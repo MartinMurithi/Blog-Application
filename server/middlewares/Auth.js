@@ -6,15 +6,16 @@ const protectRoute = async (req, res, next) => {
   try {
     let token;
     token = req.cookies.jwt;
+
     if (token) {
-      const decoded = jwt.verify("jwt", process.env.JWT_KEY);
+      const decoded = jwt.verify(token, process.env.JWT_KEY);
       req.user = await User.findById(decoded.userId).select("-password");
       next();
     } else {
-      res.status(401).json({ error: "Not authorized, no token found", token });
+      res.status(401).json({ error: "Not authorized, no token" });
     }
-  } catch (err) {
-    res.status(401).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 

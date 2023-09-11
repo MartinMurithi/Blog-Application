@@ -6,12 +6,14 @@ const cors = require('cors');
 const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
+const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 dbConnect();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", blogRouter);

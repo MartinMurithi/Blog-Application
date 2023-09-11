@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 const validateEmail = require("../utils/emailValidator");
-const { generateToken } = require("../utils/generateToken");
+const { generateToken, destroyToken } = require("../utils/generateToken");
 const SALT_ROUNDS = 10;
 
 // @Desc  Register new users
@@ -38,30 +38,40 @@ const registerUser = async (req, res) => {
   }
 };
 
-//Desc  Login
-// Route  /login
-// Access Public
+//@Desc  Login
+//@Route  /login
+//@Access Public
 const logIn = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: "User does not exist" });
+      return res.status(404).json({ error: "Invalid login credentials" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ error: "Invalid login credentials" });
     }
 
     generateToken(res, user._id);
-    res
-      .status(200)
-      .json({ message: "LogIn successful", user: user});
+    res.status(200).json({ message: "LogIn successful", user: user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { registerUser, logIn };
+// @Desc  Logout user out by destryoing token
+// @Route /logout
+// @Access Private
+const logOut = async (req, res) => {
+  try {
+    destroyToken(res);
+    res.status(201).json({ message: "User logged out" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { registerUser, logIn, logOut};
