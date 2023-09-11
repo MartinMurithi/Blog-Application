@@ -39,6 +39,29 @@ export const blogrApi = createApi({
       }),
       invalidatesTags: ["Articles"],
     }),
+    registerUser: builder.mutation({
+      query: (user) => ({
+        url: "/register",
+        method: "POST",
+        body: user,
+      }),
+      invalidatesTags: ["Articles"],
+    }),
+    loginUser: builder.mutation({
+      query: (user) => ({
+        url: "login",
+        method: "POST",
+        body: user,
+      }),
+      invalidatesTags: ["Articles"],
+    }),
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: "logout",
+        method: "POST",
+      }),
+      invalidatesTags: ["Articles"],
+    }),
   }),
 });
 
@@ -48,4 +71,7 @@ export const {
   useGetOneArticleQuery,
   useUpdateArticleMutation,
   useDeleteArticleMutation,
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useLogoutUserMutation,
 } = blogrApi;

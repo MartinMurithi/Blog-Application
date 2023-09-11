@@ -1,9 +1,14 @@
 import React, { forwardRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { useLoginUserMutation } from "../redux/api/apiSlice";
+import { useNavigate } from "react-router-dom";
 
 const SignInEmailModal = forwardRef((props, ref) => {
+  const navigate = useNavigate();
+  const [handleLogin, { isError, error, isLoading }] = useLoginUserMutation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const dialogId = "id";
 
   const handleCloseDialog = () => {
@@ -12,13 +17,21 @@ const SignInEmailModal = forwardRef((props, ref) => {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (ref.current) {
-      ref.current.close();
+
+    try {
+      await handleLogin({ email, password }).unwrap();
+
+      if (ref.current) {
+        ref.current.close();
+      }
+      setEmail("");
+      setPassword("");
+      navigate("/articles");
+    } catch (err) {
+      console.log(err.message || error);
     }
-    console.log(email);
-    console.log(password);
   };
 
   return (
@@ -66,11 +79,17 @@ const SignInEmailModal = forwardRef((props, ref) => {
               className="border-black border-b-[1px] outline-none w-60 text-center text-sm mt-6"
             />
 
+            {isError && (
+              <p className="text-red-600 font-semibold text-sm text-start mt-4">
+                {error?.data?.error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="bg-black px-14 py-2 rounded-full my-10 text-white"
+              className="bg-black px-14 py-3 rounded-full my-10 text-white"
             >
-              Continue
+              {isLoading ? "Loading..." : "Continue"}
             </button>
           </form>
         </section>
