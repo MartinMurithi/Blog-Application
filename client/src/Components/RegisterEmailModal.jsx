@@ -1,10 +1,11 @@
 import React, { forwardRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { useRegisterUserMutation } from "../redux/api/apiSlice";
+import { useNavigate } from "react-router-dom";
 
 const RegisterEmailModal = forwardRef((props, ref) => {
-  const [handleRegister, { isError, error, isLoading }] =
-    useRegisterUserMutation();
+  const navigate = useNavigate();
+  const [handleRegister, { isError, error, isLoading }] = useRegisterUserMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,10 +27,10 @@ const RegisterEmailModal = forwardRef((props, ref) => {
       }
       setEmail("");
       setPassword("");
-
-      console.log(`Success ${(email, password)}`);
+      navigate("/signIn");
     } catch (err) {
-      console.log(err.message || error);
+      console.log(err?.data?.error);
+      // console.log(err.message || error);
     }
   };
 

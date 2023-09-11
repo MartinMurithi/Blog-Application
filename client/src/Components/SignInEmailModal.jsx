@@ -2,8 +2,11 @@ import React, { forwardRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { useLoginUserMutation } from "../redux/api/apiSlice";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../redux/api/authSlice";
 
 const SignInEmailModal = forwardRef((props, ref) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [handleLogin, { isError, error, isLoading }] = useLoginUserMutation();
   const [email, setEmail] = useState("");
@@ -21,16 +24,17 @@ const SignInEmailModal = forwardRef((props, ref) => {
     e.preventDefault();
 
     try {
-      await handleLogin({ email, password }).unwrap();
-
+      const data = await handleLogin({ email, password }).unwrap();
       if (ref.current) {
         ref.current.close();
       }
+      dispatch(setUserInfo({ ...data }));
+
       setEmail("");
       setPassword("");
       navigate("/articles");
     } catch (err) {
-      console.log(err.message || error);
+      console.log(error?.data?.error);
     }
   };
 

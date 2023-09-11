@@ -27,7 +27,7 @@ const registerUser = async (req, res) => {
       email: req.body.email,
       password: hashPassword,
     });
-    generateToken(res, newUser._id);
+    // generateToken(res, newUser._id);
     await newUser.save();
 
     res

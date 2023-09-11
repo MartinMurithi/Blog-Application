@@ -6,6 +6,7 @@ import SignInEmailModal from "../Components/SignInEmailModal";
 function SignInOptions() {
   const dialogRef = useRef();
 
+
   const handleRegisterWithEmail = () => {
     if (dialogRef.current) {
       const dialogId = dialogRef.current;

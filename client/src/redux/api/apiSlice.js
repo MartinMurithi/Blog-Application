@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const blogrApi = createApi({
+export const apiSlice = createApi({
   reducerPath: "blogrApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/blogr.io/api/v1",
@@ -74,4 +74,4 @@ export const {
   useRegisterUserMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
-} = blogrApi;
+} = apiSlice;
