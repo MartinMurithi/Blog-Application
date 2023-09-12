@@ -15,12 +15,16 @@ const blogSchema = mongoose.Schema(
     },
     categories: {
       type: Array,
-      required: [true, "Atleast on categoery is required"],
+      required: [true, "Atleast one categoery is required"],
     },
     content: {
       type: String,
       required: true,
     },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   },
   { timestamps: true }
 );

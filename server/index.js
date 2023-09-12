@@ -7,6 +7,8 @@ const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
 const cookieParser = require("cookie-parser");
+const { logIn } = require("./controllers/userController");
+const { postBlog } = require("./controllers/blogController");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
@@ -20,6 +22,8 @@ app.use("/", blogRouter);
 app.use("/", userRouter);
 
 app.all("*", (req, res) => {
+  logIn()
+  postBlog();
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));

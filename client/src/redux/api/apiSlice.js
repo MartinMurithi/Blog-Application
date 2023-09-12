@@ -1,9 +1,32 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// Custom fetchBaseQuery, to add cookie in the request headers of requests
+
+// const customBaseQuery = fetchBaseQuery({
+//   baseUrl: "http://localhost:5000/blogr.io/api/v1",
+//   // Customize Request Header
+//   prepareHeaders: (headers) => {
+//     // Retrieve the JWT from the cookie
+//     const jwtCookie = document.cookie.split(';').find((cookie) => cookie.trim().startsWith('jwt='));
+
+//     if (jwtCookie) {
+//       const jwtToken = jwtCookie.split('=')[1];
+//       // Include the token in the authorization header
+//       headers.set('Authorization', `Bearer ${jwtToken}`);
+//        console.log("Headers with Authorization:", headers);
+//     }else {
+//       console.log("JWT token not found in cookie.");
+//     }
+
+//     return headers;
+//   }
+// })
+
 export const apiSlice = createApi({
   reducerPath: "blogrApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/blogr.io/api/v1",
+    credentials: "include"
   }),
   tagTypes: ["Articles"],
   endpoints: (builder) => ({

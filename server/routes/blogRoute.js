@@ -10,11 +10,13 @@ const {
 } = require("../controllers/blogController");
 const upload = require("../config/multer");
 const fileSizeLimitErrorHandler = require("../middlewares/multerFileSize");
+const protectRoute = require("../middlewares/Auth");
 
 router.post(
   "/blogr.io/api/v1/write",
   upload.single("coverImage"),
   fileSizeLimitErrorHandler,
+  protectRoute,
   postBlog
 );
 router.get("/blogr.io/api/v1/articles", getBlogs);

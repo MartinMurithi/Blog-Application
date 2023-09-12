@@ -45,7 +45,7 @@ const logIn = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("-skills");
     if (!user) {
       return res.status(404).json({ error: "Invalid login credentials" });
     }
@@ -57,6 +57,7 @@ const logIn = async (req, res) => {
 
     generateToken(res, user._id);
     res.status(200).json({ message: "LogIn successful", user: user });
+    console.log(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -74,4 +75,9 @@ const logOut = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, logIn, logOut};
+const fetch = async (req, res) => {
+  const users = await User.find({});
+  res.json({users})
+}
+
+module.exports = { registerUser, logIn, logOut, fetch};
