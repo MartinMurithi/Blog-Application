@@ -1,34 +1,41 @@
-import Home from "./Pages/Home";
 import { Route, Routes } from "react-router-dom";
 import "./styles/tailwind.css";
-import AboutUs from "./Pages/AboutUs";
-import Articles from "./Pages/Articles";
+import HomePage from "./Pages/HomePage";
+import AboutUsPage from "./Pages/AboutUsPage";
+import ArticlesPage from "./Pages/ArticlesPage";
 import ArticlePage from "./Pages/ArticlePage";
-import Write from "./Pages/Write";
-import RegisterOptions from "./Pages/RegisterOptions";
+import WritePage from "./Pages/WritePage";
+import RegisterOptionsPage from "./Pages/RegisterOptionsPage";
 import NavBar from "./Components/NavBar";
-import SignInOptions from "./Pages/SignInOptions";
+import SignInOptionsPage from "./Pages/SignInOptionsPage";
+import AccountPage from "./Pages/AccountPage";
+import SettingsPage from "./Pages/SettingsPage";
+import DashboardPage from "./Pages/DashboardPage"
+import ReadingListPage from "./Pages/ReadingListPage"
 import { SkeletonTheme } from "react-loading-skeleton";
-import {ToastContainer} from "react-toastify";
-  import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <div>
-      <ToastContainer style={{width : 'auto'}}/>
+      <ToastContainer style={{ width: "auto" }} />
       <NavBar />
       <SkeletonTheme baseColor="#e6eaf2" highlightColor="#f0f0f0">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/articles" element={<Articles />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/articles" element={<ArticlesPage />} />
           <Route path="/article/:_id" element={<ArticlePage />} />
-          <Route path="/write" element={<Write />} />
-          <Route path="/signIn" element={<SignInOptions />} />
-          <Route path="/register" element={<RegisterOptions />} />
+          <Route path="/write" element={<WritePage />} />
+          <Route path="/signIn" element={<SignInOptionsPage />} />
+          <Route path="/register" element={<RegisterOptionsPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/readinglist" element={<ReadingListPage />} />
         </Routes>
       </SkeletonTheme>
-      
     </div>
   );
 }

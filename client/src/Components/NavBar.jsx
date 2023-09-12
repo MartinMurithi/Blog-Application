@@ -1,25 +1,17 @@
-import React, { useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useLogoutUserMutation } from "../redux/api/apiSlice";
-import { removeUserInfo } from "../redux/api/authSlice";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Logo from "./Logo";
+import AccountDropdown from "./AccountDropdown";
 
 function NavBar() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  const [handleLogOutApiCall, { isLoading }] = useLogoutUserMutation();
+  const [openDropDown, setOpenDropDown] = useState(false);
 
-  const handleLogOut = async () => {
-    try {
-      await handleLogOutApiCall().unwrap();
-      dispatch(removeUserInfo());
-      navigate("/");
-    } catch (err) {
-      console.log(err.message);
-    }
+  const openAccountDropdown = () => {
+    setOpenDropDown((current) => !current);
   };
+
   return (
     <>
       <nav className="bg-veryLightGray flex justify-between items-center py-5 px-4">
@@ -47,12 +39,17 @@ function NavBar() {
               >
                 Write
               </NavLink>
-              <p
-                onClick={handleLogOut}
-                className={"hover:border-b-4 border-green px-2"}
+
+              <button
+                onClick={openAccountDropdown}
+                className="border-none outline-none"
               >
-                LogOut
-              </p>
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOrUxWoOcFvZpXT3_3Ur1RSKF6HJJ_S13FCCgB6FDdmA&s"
+                  alt=""
+                  className="w-12 h-11 rounded-full"
+                />
+              </button>
             </>
           ) : (
             <>
@@ -115,13 +112,6 @@ function NavBar() {
               >
                 Write
               </NavLink>
-
-              <p
-                onClick={handleLogOut}
-                className={"hover:border-b-4 border-green px-2"}
-              >
-                LogOut
-              </p>
             </>
           ) : (
             <>
@@ -135,6 +125,7 @@ function NavBar() {
           )}
         </div>
       </nav>
+      {openDropDown && <AccountDropdown />}
     </>
   );
 }
