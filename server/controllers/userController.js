@@ -1,13 +1,9 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 const validateEmail = require("../utils/emailValidator");
 const { generateToken, destroyToken } = require("../utils/generateToken");
 const SALT_ROUNDS = 10;
 
-// @Desc  Register new users
-// @Route /register
-// @Access  Public
 const registerUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -27,7 +23,6 @@ const registerUser = async (req, res) => {
       email: req.body.email,
       password: hashPassword,
     });
-    // generateToken(res, newUser._id);
     await newUser.save();
 
     res
@@ -38,9 +33,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-//@Desc  Login
-//@Route  /login
-//@Access Public
 const logIn = async (req, res) => {
   const { email, password } = req.body;
 
@@ -63,9 +55,6 @@ const logIn = async (req, res) => {
   }
 };
 
-// @Desc  Logout user out by destryoing token
-// @Route /logout
-// @Access Private
 const logOut = async (req, res) => {
   try {
     destroyToken(res);
@@ -75,9 +64,4 @@ const logOut = async (req, res) => {
   }
 };
 
-const fetch = async (req, res) => {
-  const users = await User.find({});
-  res.json({users})
-}
-
-module.exports = { registerUser, logIn, logOut, fetch};
+module.exports = { registerUser, logIn, logOut };

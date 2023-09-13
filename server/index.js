@@ -7,23 +7,25 @@ const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
 const cookieParser = require("cookie-parser");
-const { logIn } = require("./controllers/userController");
-const { postBlog } = require("./controllers/blogController");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true
+}
+
 dbConnect();
-app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
+app.use(express.json());
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", blogRouter);
 app.use("/", userRouter);
 
 app.all("*", (req, res) => {
-  logIn()
-  postBlog();
+  
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));

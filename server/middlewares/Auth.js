@@ -12,7 +12,7 @@ const protectRoute = async (req, res, next) => {
       req.user = await User.findById(decoded.userId).select("-password");
       next();
     } else {
-      res.status(401).json({ error: "Not authorized, no token" });
+      res.status(401).json({ error: "Unauthorized" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
