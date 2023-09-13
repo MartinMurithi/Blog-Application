@@ -1,23 +1,25 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
 
 const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+  },
   username: {
     type: String,
     // required: true,
   },
   email: {
     type: String,
-    required: true
+    // required: true,
   },
   password: {
     type: String,
-    required: true
+    // required: true,
   },
-  profileImg: {
+  profileImage: {
     type: String,
   },
-  biography: {
+  bio: {
     type: String,
   },
   skills: {
@@ -32,7 +34,10 @@ const userSchema = mongoose.Schema({
   websiteURL: {
     type: String,
   },
-  githubURL: {
+  technology: {
+    type: String,
+  },
+  project: {
     type: String,
   },
 });

@@ -1,9 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, logIn, logOut } = require("../controllers/userController");
+const {
+  registerUser,
+  logIn,
+  logOut,
+  updateUserInfo,
+} = require("../controllers/userController");
+const upload = require("../config/multer");
+const fileSizeLimitErrorHandler = require("../middlewares/multerFileSize");
+const protectRoute = require("../middlewares/Auth");
 
 router.post("/blogr.io/api/v1/register", registerUser);
 router.post("/blogr.io/api/v1/login", logIn);
 router.post("/blogr.io/api/v1/logout", logOut);
+router.post(
+  "/blogr.io/api/v1/updateuser",
+  protectRoute,
+  upload.single("profileImage"),
+  fileSizeLimitErrorHandler,
+  updateUserInfo
+);
 
 module.exports = router;

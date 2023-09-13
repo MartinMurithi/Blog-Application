@@ -64,4 +64,21 @@ const logOut = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, logIn, logOut };
+const updateUserInfo = async (req, res) => {
+  try {
+    const data = req.body;
+    // check if username exists
+    const existingUsername = User.findById(data.username);
+    // if (existingUsername) {
+    //   res.status(409).json({ error: "Username already taken" });
+    // } else {
+      const user = new User(data);
+      await user.save();
+      res.status(200).json({ message: "Information saved successfully", user });
+    // }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { registerUser, logIn, logOut, updateUserInfo };

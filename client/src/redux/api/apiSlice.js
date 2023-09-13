@@ -85,6 +85,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Articles"],
     }),
+    updateUserInfo: builder.mutation({
+      query: (user) => ({
+        url: "updateuser",
+        method: "PUT",
+        body: user
+      })
+    })
   }),
 });
 
@@ -97,4 +104,5 @@ export const {
   useRegisterUserMutation,
   useLoginUserMutation,
   useLogoutUserMutation,
+  useUpdateUserInfoMutation
 } = apiSlice;
