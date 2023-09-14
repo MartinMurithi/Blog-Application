@@ -34,12 +34,15 @@ const userSchema = mongoose.Schema({
   websiteURL: {
     type: String,
   },
-  technology: {
-    type: String,
+  technologies: {
+    type: Array,
   },
   project: {
     type: String,
   },
+  location: {
+    type: String
+  }
 });
 
 const userModel = mongoose.model("User", userSchema);

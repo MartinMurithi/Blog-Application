@@ -10,6 +10,7 @@ const AccountDropdown = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [handleLogOutApiCall, { isLoading }] = useLogoutUserMutation();
 
+  const _id = userInfo?.user?._id;
   const handleLogOut = async () => {
     try {
       await handleLogOutApiCall().unwrap();
@@ -24,10 +25,10 @@ const AccountDropdown = () => {
     <div className="flex flex-col items-end">
       <div className="w-[18%] h-72 flex flex-col items-start justify-center gap-4 mt-2 mr-14 pl-4 py-3 shadow-xl absolute">
         <NavLink to={"/account"}>Account || Username</NavLink>
-        <NavLink to={"dashboard"}>Dashboard</NavLink>
-        <NavLink to={"write"}>Write</NavLink>
-        <NavLink to={"readinglist"}>Reading List</NavLink>
-        <NavLink to={"settings"}>Settings</NavLink>
+        <NavLink to={"/dashboard"}>Dashboard</NavLink>
+        <NavLink to={"/write"}>Write</NavLink>
+        <NavLink to={"/readinglist"}>Reading List</NavLink>
+        <NavLink to={"/settings"}>Settings</NavLink>
         <button onClick={handleLogOut} className="border-none outline-none">
           Logout
         </button>

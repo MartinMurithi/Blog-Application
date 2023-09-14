@@ -72,7 +72,7 @@ export const apiSlice = createApi({
     }),
     loginUser: builder.mutation({
       query: (user) => ({
-        url: "login",
+        url: "/login",
         method: "POST",
         body: user,
       }),
@@ -80,17 +80,18 @@ export const apiSlice = createApi({
     }),
     logoutUser: builder.mutation({
       query: () => ({
-        url: "logout",
+        url: "/logout",
         method: "POST",
       }),
       invalidatesTags: ["Articles"],
     }),
     updateUserInfo: builder.mutation({
-      query: (user) => ({
-        url: "updateuser",
+      query: ({id, ...user}) => ({
+        url: "/updateuser",
         method: "PUT",
         body: user
-      })
+      }),
+      invalidatesTags: ["Articles"]
     })
   }),
 });

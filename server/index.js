@@ -2,18 +2,19 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const cors = require('cors');
+const cors = require("cors");
 const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
 const cookieParser = require("cookie-parser");
+const { updateUserInfo } = require("./controllers/userController");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 const corsOptions = {
   origin: "http://localhost:5173",
-  credentials: true
-}
+  credentials: true,
+};
 
 dbConnect();
 app.use(cookieParser());
@@ -24,8 +25,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", blogRouter);
 app.use("/", userRouter);
 
+
 app.all("*", (req, res) => {
-  
+updateUserInfo();
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));

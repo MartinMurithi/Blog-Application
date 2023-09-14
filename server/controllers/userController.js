@@ -66,16 +66,32 @@ const logOut = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   try {
-    const data = req.body;
-    // check if username exists
-    const existingUsername = User.findById(data.username);
-    // if (existingUsername) {
-    //   res.status(409).json({ error: "Username already taken" });
-    // } else {
-      const user = new User(data);
-      await user.save();
-      res.status(200).json({ message: "Information saved successfully", user });
-    // }
+    // Extract id to find the user object
+    const userId = req.user._id;
+    console.log(req.file);
+    if (!req.file) {
+      return res.status(400).json({ message: "Profile image is required" });
+    }
+    const user = await User.findByIdAndUpdate(
+      { _id: userId },
+      {
+        username: req.body.username,
+        name: req.body.name,
+        email: req.body.email,
+        profileImage: req.file.path,
+        bio: req.body.bio,
+        skills: JSON.parse(req.body.skills),
+        work: req.body.work,
+        education: req.body.education,
+        websiteURL: req.body.websiteURL,
+        technologies: JSON.parse(req.body.technologies),
+        project: req.body.project,
+        location: req.body.location,
+      }
+    );
+    res
+      .status(200)
+      .json({ message: "Information saved successfully", user: user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
