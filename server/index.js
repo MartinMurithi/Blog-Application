@@ -27,7 +27,7 @@ app.use("/", userRouter);
 
 
 app.all("*", (req, res) => {
-updateUserInfo();
+// updateUserInfo();
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));

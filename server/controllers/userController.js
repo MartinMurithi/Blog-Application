@@ -68,7 +68,7 @@ const updateUserInfo = async (req, res) => {
   try {
     // Extract id to find the user object
     const userId = req.user._id;
-    console.log(req.file);
+    console.log(req.file.path);
     if (!req.file) {
       return res.status(400).json({ message: "Profile image is required" });
     }
@@ -78,7 +78,7 @@ const updateUserInfo = async (req, res) => {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        profileImage: req.file.path,
+        profileImage: req.file ? req.file.path : undefined,
         bio: req.body.bio,
         skills: JSON.parse(req.body.skills),
         work: req.body.work,

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useUpdateUserInfoMutation } from "../redux/api/apiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../redux/api/authSlice";
 
 const SettingsPage = () => {
-  const _id = useSelector((state) => state.auth.userInfo.user._id);
-  const [handleUpdateInfo, { isLoading, error }] =
-    useUpdateUserInfoMutation(_id);
+  const [handleUpdateUserInfo, { isLoading, error }] =
+    useUpdateUserInfoMutation();
+  const dispatch = useDispatch();
 
-  console.log(_id);
   const [user, setUser] = useState({
     username: "",
     name: "",
@@ -20,17 +20,15 @@ const SettingsPage = () => {
     technologies: "",
     project: "",
     location: "",
+    profileImage: "",
   });
-  const [profileImage, setProfileImage] = useState(null);
   const [profileImgPreview, setProfileImgPreview] = useState("");
 
   const handleImageInput = (e) => {
     const selectedFile = e.target.files[0];
-    // setProfileImage(e.target.files[0]);
 
     if (selectedFile) {
-      setProfileImage(selectedFile);
-      console.log(selectedFile);
+      setUser({ ...user, profileImage: e.target.files[0] });
 
       const fileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -53,14 +51,11 @@ const SettingsPage = () => {
     formData.append("technologies", JSON.stringify(user.technologies));
     formData.append("project", user.project);
     formData.append("location", user.location);
-    formData.append("profileImage", profileImage);
+    formData.append("profileImage", user.profileImage);
 
     try {
-      const res = await handleUpdateInfo({ formData }, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await handleUpdateUserInfo(formData);
+      //dispatch(setUserInfo({...user}));
       console.log(res);
     } catch (err) {
       console.log(err.message || error);
