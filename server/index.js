@@ -7,7 +7,7 @@ const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
 const cookieParser = require("cookie-parser");
-const { updateUserInfo } = require("./controllers/userController");
+// const { fetchUser } = require("./controllers/userController");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
@@ -27,7 +27,6 @@ app.use("/", userRouter);
 
 
 app.all("*", (req, res) => {
-// updateUserInfo();
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));

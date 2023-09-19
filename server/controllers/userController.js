@@ -49,7 +49,6 @@ const logIn = async (req, res) => {
 
     generateToken(res, user._id);
     res.status(200).json({ message: "LogIn successful", user: user });
-    console.log(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -97,4 +96,15 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, logIn, logOut, updateUserInfo };
+// Fetch user based on ID stored in the token
+const fetchUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId).select("-password");
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { registerUser, logIn, logOut, updateUserInfo, fetchUser };

@@ -3,8 +3,10 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "./Logo";
 import AccountDropdown from "./AccountDropdown";
+import { useGetUserInfoQuery } from "../redux/api/apiSlice";
 
 function NavBar() {
+  const { data: user } = useGetUserInfoQuery();
   const { userInfo } = useSelector((state) => state.auth);
   const [openDropDown, setOpenDropDown] = useState(false);
 
@@ -45,9 +47,9 @@ function NavBar() {
                 className="border-none outline-none"
               >
                 <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOrUxWoOcFvZpXT3_3Ur1RSKF6HJJ_S13FCCgB6FDdmA&s"
-                  alt=""
-                  className="w-12 h-11 rounded-full"
+                  src={`http://localhost:5000/${user?.profileImage}`}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full"
                 />
               </button>
             </>

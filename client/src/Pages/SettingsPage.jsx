@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUpdateUserInfoMutation } from "../redux/api/apiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../redux/api/authSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SettingsPage = () => {
-  const [handleUpdateUserInfo, { isLoading, error }] =
-    useUpdateUserInfoMutation();
+  const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [handleUpdateUserInfo, { isLoading, isError, error, isSuccess }] =
+    useUpdateUserInfoMutation();
 
   const [user, setUser] = useState({
     username: "",
@@ -28,7 +31,7 @@ const SettingsPage = () => {
     const selectedFile = e.target.files[0];
 
     if (selectedFile) {
-      setUser({ ...user, profileImage: e.target.files[0] });
+      setUser({ ...user, profileImage: selectedFile });
 
       const fileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -54,9 +57,8 @@ const SettingsPage = () => {
     formData.append("profileImage", user.profileImage);
 
     try {
-      const res = await handleUpdateUserInfo(formData);
-      //dispatch(setUserInfo({...user}));
-      console.log(res);
+      await handleUpdateUserInfo(formData);
+      dispatch(setUserInfo({ ...user }));
     } catch (err) {
       console.log(err.message || error);
     }
@@ -67,12 +69,17 @@ const SettingsPage = () => {
     await postData();
   };
 
+  // Fill form with user information
+  useEffect(() => {
+    setUser(userInfo);
+  }, [userInfo]);
+
   return (
     <div className=" bg-gray-100 flex px-1 justify-center md:items-center md:gap-3">
       {/* Form container */}
       <div className="w-[90%] flex flex-col md:w-[50%]">
         <p className="text-blue-700 font-bold text-xl mt-4 text-start md:text-[30px] md:mt-8 md:mb-5 ">
-          @martinwachira
+          {`@${user?.username || user?.email} `}
         </p>
 
         {/* Collect basic user infor */}
@@ -91,11 +98,10 @@ const SettingsPage = () => {
               name="name"
               id="name"
               placeholder="Full Names"
-              value={user.name}
+              value={user?.name || ''}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
-            {console.log(user.name)}
             <label htmlFor="email" className="font-semibold my-2">
               Email
             </label>
@@ -104,7 +110,7 @@ const SettingsPage = () => {
               name="email"
               id="email"
               placeholder="email"
-              value={user.email}
+              value={user?.email || ''}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
@@ -117,7 +123,7 @@ const SettingsPage = () => {
               name="username"
               id="username"
               placeholder="username"
-              value={user.username}
+              value={user?.username || ''}
               onChange={(e) => setUser({ ...user, username: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
@@ -154,7 +160,7 @@ const SettingsPage = () => {
               name="websiteURL"
               id="websiteURL"
               placeholder="https://yoursite.com"
-              value={user.websiteURL}
+              value={user?.websiteURL || ''}
               onChange={(e) => setUser({ ...user, websiteURL: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
@@ -166,7 +172,7 @@ const SettingsPage = () => {
               name="location"
               id="location"
               placeholder="Nairobi, Kenya"
-              value={user.location}
+              value={user?.location || ''}
               onChange={(e) => setUser({ ...user, location: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
@@ -180,7 +186,7 @@ const SettingsPage = () => {
               rows="3"
               placeholder="A short Bio"
               maxLength={100}
-              value={user.bio}
+              value={user?.bio || ''}
               onChange={(e) => setUser({ ...user, bio: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             ></textarea>
@@ -192,7 +198,7 @@ const SettingsPage = () => {
               name="skills"
               placeholder="E.g Web development, App development, cyber security"
               maxLength={100}
-              value={user.skills}
+              value={user?.skills || ''}
               onChange={(e) => setUser({ ...user, skills: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
@@ -203,7 +209,7 @@ const SettingsPage = () => {
               id="technologies"
               name="technologies"
               placeholder="Any programming languages, frameworks, etc. to hightlight"
-              value={user.technologies}
+              value={user?.technologies || ''}
               onChange={(e) =>
                 setUser({ ...user, technologies: e.target.value })
               }
@@ -218,7 +224,7 @@ const SettingsPage = () => {
               cols="30"
               rows="4"
               placeholder="What projects are currently occupying most of your time ?"
-              value={user.project}
+              value={user?.project || ''}
               onChange={(e) => setUser({ ...user, project: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
               maxLength={200}
@@ -235,7 +241,7 @@ const SettingsPage = () => {
               cols="30"
               rows="2"
               placeholder="What dou do ? Example CEO, Network engineer"
-              value={user.work}
+              value={user?.work || ' '}
               onChange={(e) => setUser({ ...user, work: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             ></textarea>
@@ -247,7 +253,7 @@ const SettingsPage = () => {
               name="education"
               id="education"
               placeholder="Where did you go school?"
-              value={user.education}
+              value={user?.education || ' '}
               onChange={(e) => setUser({ ...user, education: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
             />
@@ -255,10 +261,16 @@ const SettingsPage = () => {
               type="submit"
               className="bg-blue-700 py-2 mb-6 text-white rounded-md"
             >
-              Save profile information
-            </button>
+              {isLoading ? "Updating...." : "Save profile information"}
+              
+            </button>{isSuccess &&
+                toast.success("Your profile has been updated", {
+                  toastId: ''
+                })
+              }
           </form>
         </div>
+        
       </div>
     </div>
   );

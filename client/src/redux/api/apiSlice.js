@@ -76,6 +76,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Articles"],
     }),
+    getUserInfo: builder.query({
+      query: ()=> ({
+        url: "/user",
+        method: "GET"
+      }),
+      providesTags: ["Articles"],
+    })
   }),
 });
 
@@ -89,4 +96,5 @@ export const {
   useLoginUserMutation,
   useLogoutUserMutation,
   useUpdateUserInfoMutation,
+  useGetUserInfoQuery
 } = apiSlice;

@@ -23,8 +23,8 @@ const AccountDropdown = () => {
 
   return (
     <div className="flex flex-col items-end">
-      <div className="w-[18%] h-72 flex flex-col items-start justify-center gap-4 mt-2 mr-14 pl-4 py-3 shadow-xl absolute">
-        <NavLink to={"/account"}>Account || Username</NavLink>
+      <div className="w-[12%] h-72 flex flex-col items-start justify-center gap-4 mt-2 mr-14 pl-4 py-3 shadow-xl absolute">
+        <NavLink to={"/account"}>Account</NavLink>
         <NavLink to={"/dashboard"}>Dashboard</NavLink>
         <NavLink to={"/write"}>Write</NavLink>
         <NavLink to={"/readinglist"}>Reading List</NavLink>
