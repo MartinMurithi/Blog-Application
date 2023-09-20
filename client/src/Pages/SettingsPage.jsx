@@ -10,21 +10,8 @@ const SettingsPage = () => {
   const dispatch = useDispatch();
   const [handleUpdateUserInfo, { isLoading, isError, error, isSuccess }] =
     useUpdateUserInfoMutation();
-
-  const [user, setUser] = useState({
-    username: "",
-    name: "",
-    email: "",
-    bio: "",
-    skills: "",
-    work: "",
-    education: "",
-    websiteURL: "",
-    technologies: "",
-    project: "",
-    location: "",
-    profileImage: "",
-  });
+  
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('userInfo')).user);
   const [profileImgPreview, setProfileImgPreview] = useState("");
 
   const handleImageInput = (e) => {
@@ -69,13 +56,17 @@ const SettingsPage = () => {
     await postData();
   };
 
+  
+
   // Fill form with user information
   useEffect(() => {
-    setUser(userInfo);
-  }, [userInfo]);
+   //console.log(user.user._id);
+    console.log(userInfo);
+    console.log();
+  }, []);
 
   return (
-    <div className=" bg-gray-100 flex px-1 justify-center md:items-center md:gap-3">
+    <div className="flex px-1 justify-center md:items-center md:gap-3">
       {/* Form container */}
       <div className="w-[90%] flex flex-col md:w-[50%]">
         <p className="text-blue-700 font-bold text-xl mt-4 text-start md:text-[30px] md:mt-8 md:mb-5 ">

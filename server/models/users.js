@@ -44,6 +44,10 @@ const userSchema = mongoose.Schema(
     location: {
       type: String,
     },
+    blogs: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog"
+    }
   },
   { timestamps: true }
 );

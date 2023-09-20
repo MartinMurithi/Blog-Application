@@ -20,20 +20,6 @@ import { useEffect } from "react";
 
 function App() {
 
-  // const x = () => {
-  //   const jwtCookie = document.cookie.split(';').find((cookie) => cookie.trim().startsWith('jwt='));
-  //   if (jwtCookie) {
-  //         console.log(jwtCookie);
-
-  //   } else {
-  //     console.log('cookie not found');
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   x()
-  // }, []);
-  
   return (
     <div>
       <ToastContainer style={{ width: "auto" }} />

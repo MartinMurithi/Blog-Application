@@ -79,11 +79,11 @@ const updateUserInfo = async (req, res) => {
         email: req.body.email,
         profileImage: req.file ? req.file.path : undefined,
         bio: req.body.bio,
-        skills: JSON.parse(req.body.skills),
+        skills: JSON.parse(req.body.skills) || req.body.skills,
         work: req.body.work,
         education: req.body.education,
         websiteURL: req.body.websiteURL,
-        technologies: JSON.parse(req.body.technologies),
+        technologies: JSON.parse(req.body.technologies || req.body.technologies),
         project: req.body.project,
         location: req.body.location,
       }
@@ -100,7 +100,7 @@ const updateUserInfo = async (req, res) => {
 const fetchUser = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId).select("-password").populate('blogs');
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

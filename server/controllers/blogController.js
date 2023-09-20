@@ -18,7 +18,7 @@ const postBlog = async (req, res) => {
     await blog.save();
     res.status(201).json({
       message: "Blog created successfully",
-      blog: blog
+      blog: blog,
     });
     console.log(blog);
   } catch (err) {
@@ -33,9 +33,12 @@ const getBlogs = async (req, res) => {
   try {
     const blogs = await blogModel
       .find({})
-      .select("-__v")
       .sort({ createdAt: -1 })
-      .populate('author');
+      .populate({
+        path: 'author',
+        select:['createdAt', 'name', 'profileImage']
+      });
+
     res.status(200).json({
       count: blogs.length,
       blogs: blogs,
@@ -53,7 +56,12 @@ const getOneBlog = async (req, res) => {
     const { id: _id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(500).json({ message: `${_id} is not a valid id` });
-    const blog = await blogModel.findById(_id).select("-__v")
+    const blog = await blogModel
+      .findById(_id)
+      .populate({
+        path: 'author',
+        select: ['name', 'profileImage', 'blogs']
+      });
     res.status(200).json({
       blog: blog,
     });
@@ -66,6 +74,17 @@ const getOneBlog = async (req, res) => {
     });
   }
 };
+
+// Fetch blogs by ID
+const getBlogsById = async (req, res) => {
+  try {
+    const authorId = req.user._id;
+    const data = await blogModel.find({ id: authorId });
+    res.status(200).json({ count: data.length, data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
 
 const updateBlog = async (req, res) => {
   try {
@@ -130,4 +149,4 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-module.exports = { postBlog, getBlogs, getOneBlog, updateBlog, deleteBlog };
+module.exports = { postBlog, getBlogs, getOneBlog, getBlogsById, updateBlog, deleteBlog };
