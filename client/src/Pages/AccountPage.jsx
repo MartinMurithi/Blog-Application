@@ -1,7 +1,6 @@
 import React from "react";
 import { useGetUserInfoQuery } from "../redux/api/apiSlice";
 import { NavLink } from "react-router-dom";
-import BlogList from "./ArticlesPage";
 import {
   FaLocationPin,
   FaCakeCandles,
@@ -15,8 +14,6 @@ import BlogPostCard from "../Components/BlogPostCard";
 const AccountPage = () => {
   const { isLoading, isError, error, data: user } = useGetUserInfoQuery();
   const { data: articles } = useGetArticlesQuery();
-  console.log(user);
-  console.log(articles);
 
   const skills = user?.skills?.map((skill, index) => {
     return <li key={index}>{skill}</li>;
@@ -29,10 +26,6 @@ const AccountPage = () => {
   const authorArticles = articles?.blogs?.filter((article) => {
     return article?.author?._id === user?._id;
   });
-
-  // const articleList = authorArticles?.map((article) => {
-  //   <BlogPostCard blog={article} />;
-  // });
 
   return (
     <div className="mx-2">
@@ -91,7 +84,6 @@ const AccountPage = () => {
             </div>
           </div>
 
-          {console.log(user)}
         </div>
         {/* {/* More user infor  */}
         <div className="w-[100%] flex-col my-2 md:w-[85%] md:flex">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import format from "date-fns/format";
 import {
@@ -8,16 +8,18 @@ import {
   FaRegCirclePlay,
   FaRegShareFromSquare,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import {
   useGetOneArticleQuery,
   useGetArticlesQuery,
+  useGetUserInfoQuery,
+  useDeleteArticleMutation
 } from "../redux/api/apiSlice";
 import spinner from "../Components/Spinner/spinner";
 import BlogPostCard from "../Components/BlogPostCard";
 
 function ArticlePage() {
   const { _id } = useParams();
+
   const {
     isLoading,
     isFetching,
@@ -26,7 +28,13 @@ function ArticlePage() {
     error,
     data: article,
   } = useGetOneArticleQuery(_id);
+
   const { data: articles } = useGetArticlesQuery();
+  
+  const moreAuthorArticles = articles?.blogs?.filter((blog) => {
+    return blog?.author?._id === article?.blog?.author?._id;
+  });
+
 
   const categories = article?.blog?.categories.map((category, index) => (
     <li
@@ -36,10 +44,6 @@ function ArticlePage() {
       {category.label}
     </li>
   ));
-
-  const moreAuthorArticles = articles?.blogs?.filter((blog) => {
-    return blog?.author?._id === article?.blog?.author?._id;
-  });
 
   return (
     <>
@@ -153,13 +157,15 @@ function ArticlePage() {
       {/* More articles from author */}
 
       <div className="w-[100%]">
-        <h5 className="font-bold px-3 md:text-xl md:text-center">More from {article?.blog?.author?.name}</h5>
+        <h5 className="font-bold px-3 md:text-xl md:text-center">
+          More from {article?.blog?.author?.name}
+        </h5>
         {moreAuthorArticles?.map((article) => {
           return (
             <div key={article._id} className=" mt-6 mb-10">
-              <BlogPostCard blog={article}  />
+              <BlogPostCard blog={article} key={article._id} />
             </div>
-          )
+          );
         })}
       </div>
     </>

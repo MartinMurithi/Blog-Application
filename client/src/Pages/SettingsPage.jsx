@@ -56,15 +56,6 @@ const SettingsPage = () => {
     await postData();
   };
 
-  
-
-  // Fill form with user information
-  useEffect(() => {
-   //console.log(user.user._id);
-    console.log(userInfo);
-    console.log();
-  }, []);
-
   return (
     <div className="flex px-1 justify-center md:items-center md:gap-3">
       {/* Form container */}
