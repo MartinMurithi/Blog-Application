@@ -11,7 +11,7 @@ function BlogList() {
     isError,
     data: articles,
   } = useGetArticlesQuery();
-console.log(articles);
+  
   return (
     <>
       {isError ? <p>{error?.data?.message}</p> : null}

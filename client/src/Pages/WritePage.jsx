@@ -50,7 +50,6 @@ function Write() {
     formData.append("coverImage", coverImage);
 
     await createArticleHandler(formData);
-    console.log(formData);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,7 +94,7 @@ function Write() {
                 name="coverImage"
                 onChange={handleImagechange}
                 id="coverImg"
-                className="mt-3 w-24 cursor-pointer"
+                className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm"
               />
               {isError && (
                 <p className="text-red-500 text-sm my-2 px-1">
@@ -114,7 +113,8 @@ function Write() {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="no-scrollbar bg-gray-100 p-2 mt-6 font-bold text-2xl tracking-wide outline-[transparent] placeholder:text-black md:placeholder:text-2xl"
+              className="no-scrollbar p-2 mt-6 font-bold text-xl tracking-wide l
+              mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm md:placeholder:text-xl"
             />
 
             {/* Summary input */}
@@ -125,7 +125,7 @@ function Write() {
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="Add summary"
-              className="no-scrollbar bg-gray-100 mt-6 p-2 text-lg tracking-wide outline-[transparent] placeholder:text-black md:placeholder:text-xl"
+              className="no-scrollbar mt-6 p-2 tracking-wide md:placeholder:text-lg mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black"
             ></textarea>
           </div>
 
@@ -145,7 +145,7 @@ function Write() {
             hideSelectedOptions
             isOptionDisabled={() => categories.length >= 5}
             onChange={handleSelectChange}
-            className="px-4 py-4"
+            className="px-4 py-4 mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  placeholder:text-black placeholder:text-sm"
           />
 
           {/* Rich text component */}
@@ -155,7 +155,7 @@ function Write() {
             placeholder="Write your post content here..."
             value={content}
             onChange={setContent}
-            className="px-2 py-4"
+            className="px-2 py-4 mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  placeholder:text-black placeholder:text-sm"
           />
 
           <button

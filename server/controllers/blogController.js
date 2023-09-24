@@ -60,7 +60,7 @@ const getOneBlog = async (req, res) => {
       .findById(_id)
       .populate({
         path: 'author',
-        select: ['name', 'profileImage', 'blogs']
+        select: ['name', 'profileImage', 'bio', 'blogs']
       });
     res.status(200).json({
       blog: blog,
@@ -75,7 +75,7 @@ const getOneBlog = async (req, res) => {
   }
 };
 
-// Fetch blogs by ID
+// Fetch blogs of logged in user
 const getBlogsById = async (req, res) => {
   try {
     const authorId = req.user._id;
