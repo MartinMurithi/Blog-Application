@@ -6,8 +6,8 @@ const cors = require("cors");
 const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
+const commentsRouter = require("./routes/commentRoute");
 const cookieParser = require("cookie-parser");
-// const { fetchUser } = require("./controllers/userController");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", blogRouter);
 app.use("/", userRouter);
+app.use("/", commentsRouter);
 
 
 app.all("*", (req, res) => {

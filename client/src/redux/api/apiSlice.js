@@ -82,8 +82,23 @@ export const apiSlice = createApi({
         method: "GET"
       }),
       providesTags: ["Articles"],
-    })
-  }),
+    }),
+    getComments: builder.query({
+      query: () => ({
+        url: "/comments",
+        method: "GET"
+      }),
+      provideTags: ["Articles"]
+    }),
+    postComments: builder.mutation({
+      query: (comment) => ({
+        url: "",
+        method: "POST",
+        body: comment
+      }),
+      invalidatesTags:["Articles"]
+    }),
+  })
 });
 
 export const {
@@ -96,5 +111,7 @@ export const {
   useLoginUserMutation,
   useLogoutUserMutation,
   useUpdateUserInfoMutation,
-  useGetUserInfoQuery
+  useGetUserInfoQuery,
+  useGetCommentsQuery,
+  usePostCommentsMutation
 } = apiSlice;

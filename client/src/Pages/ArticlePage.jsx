@@ -10,14 +10,15 @@ import {
 } from "react-icons/fa6";
 import {
   useGetOneArticleQuery,
-  useGetArticlesQuery,
-  useGetUserInfoQuery,
-  useDeleteArticleMutation
+  useGetArticlesQuery
 } from "../redux/api/apiSlice";
 import spinner from "../Components/Spinner/spinner";
 import BlogPostCard from "../Components/BlogPostCard";
+import CommentSection from "../Components/CommentSection";
+import CommentCard from "../Components/CommentCard";
 
 function ArticlePage() {
+  const [showComments, setShowComments] = useState(false);
   const { _id } = useParams();
 
   const {
@@ -30,11 +31,10 @@ function ArticlePage() {
   } = useGetOneArticleQuery(_id);
 
   const { data: articles } = useGetArticlesQuery();
-  
+
   const moreAuthorArticles = articles?.blogs?.filter((blog) => {
     return blog?.author?._id === article?.blog?.author?._id;
   });
-
 
   const categories = article?.blog?.categories.map((category, index) => (
     <li
@@ -44,6 +44,10 @@ function ArticlePage() {
       {category.label}
     </li>
   ));
+
+  const showHideComments = () => {
+    setShowComments((current)=> !current);
+  };
 
   return (
     <>
@@ -127,13 +131,19 @@ function ArticlePage() {
             <p className="text-sm text-lightGray">23</p>
           </div>
           <div className="flex items-center gap-2">
-            <FaRegComment className="text-xl text-lightGray" />
+            <FaRegComment
+              className="text-xl text-lightGray cursor-pointer"
+              onClick={showHideComments}
+            />
             <p className="text-lightGray text-sm">13</p>
           </div>
         </div>
 
+        {/* Comment section */}
+        {showComments && <CommentSection />}
+
         {/* Profile modal */}
-        <section className=" my-20">
+        <section className=" my-20 bg-gray-100 py-5">
           {/* Profile image, follow button */}
           <div className="flex justify-between items-baseline mx-3">
             <img
