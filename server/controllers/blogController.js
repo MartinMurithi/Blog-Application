@@ -34,10 +34,12 @@ const getBlogs = async (req, res) => {
     const blogs = await blogModel
       .find({})
       .sort({ createdAt: -1 })
-      .populate({
-        path: 'author',
-        select:['createdAt', 'name', 'profileImage']
-      });
+      .populate(
+        {
+          path: "author",
+          select: ["createdAt", "name", "profileImage"],
+        }
+      );
 
     res.status(200).json({
       count: blogs.length,
@@ -56,12 +58,10 @@ const getOneBlog = async (req, res) => {
     const { id: _id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(500).json({ message: `${_id} is not a valid id` });
-    const blog = await blogModel
-      .findById(_id)
-      .populate({
-        path: 'author',
-        select: ['name', 'profileImage', 'bio', 'blogs']
-      });
+    const blog = await blogModel.findById(_id).populate({
+      path: "author",
+      select: ["name", "profileImage", "bio", "blogs"],
+    });
     res.status(200).json({
       blog: blog,
     });
@@ -84,7 +84,7 @@ const getBlogsById = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
 
 const updateBlog = async (req, res) => {
   try {
@@ -149,4 +149,11 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-module.exports = { postBlog, getBlogs, getOneBlog, getBlogsById, updateBlog, deleteBlog };
+module.exports = {
+  postBlog,
+  getBlogs,
+  getOneBlog,
+  getBlogsById,
+  updateBlog,
+  deleteBlog,
+};

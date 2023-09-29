@@ -84,15 +84,15 @@ export const apiSlice = createApi({
       providesTags: ["Articles"],
     }),
     getComments: builder.query({
-      query: () => ({
-        url: "/comments",
+      query: (articleId) => ({
+        url: `/comments?articleId=${articleId}`,
         method: "GET"
       }),
       provideTags: ["Articles"]
     }),
     postComments: builder.mutation({
       query: (comment) => ({
-        url: "",
+        url: "/postcomment",
         method: "POST",
         body: comment
       }),

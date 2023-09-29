@@ -140,7 +140,7 @@ function ArticlePage() {
         </div>
 
         {/* Comment section */}
-        {showComments && <CommentSection />}
+        {showComments && <CommentSection articleId={_id}/>}
 
         {/* Profile modal */}
         <section className=" my-20 bg-gray-100 py-5">

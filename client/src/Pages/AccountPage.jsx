@@ -12,7 +12,7 @@ import { useGetArticlesQuery } from "../redux/api/apiSlice";
 import BlogPostCard from "../Components/BlogPostCard";
 
 const AccountPage = () => {
-  const { isLoading, isError, error, data: user } = useGetUserInfoQuery();
+  const { data: user } = useGetUserInfoQuery();
   const { data: articles } = useGetArticlesQuery();
 
   const skills = user?.skills?.map((skill, index) => {

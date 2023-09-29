@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CommentCard = ({comment}) => {
+const CommentCard = ({ comment }) => {
 
   return (
     <section className="my-8 px-3">
       {/* Comment author */}
-      <div className="flex gap-3 items-center bg-red-400 my-3">
+      <div className="flex gap-3 items-center my-3">
         <img
           src={`http://localhost:5000/${comment?.author?.profileImage}`}
           alt="profile image"
