@@ -11,11 +11,11 @@ const CommentCard = ({ comment }) => {
           alt="profile image"
           className="h-8 w-8 rounded-full"
         />
-        <p>{ comment?.author?.name }</p>
+        <p className="font-semibold">{ comment?.author?.name }</p>
         <p>{ comment?.createdAt }</p>
       </div>
       {/* comment */}
-      <p>{ comment?.comment }</p>
+      <p className="text-lg">{ comment?.comment }</p>
     </section>
   );
 };

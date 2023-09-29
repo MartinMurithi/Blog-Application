@@ -20,10 +20,8 @@ const postComment = async (req, res) => {
 // fetch comments of a blog
 const getComments = async (req, res) => {
   try {
-    const articleId = req.query.articleId;
-    console.log(articleId);
     const comments = await commentModel
-      .find({ articleId })
+      .find({})
       .sort({ createdAt: -1 })
       .populate({
         path: 'author',
@@ -34,7 +32,6 @@ const getComments = async (req, res) => {
       return res.status(200).json({ message: "No comments available" });
     }
 
-    console.log(comments);
     res.status(200).json({ comments });
   } catch (err) {
     console.error("Error fetching comments:", err);

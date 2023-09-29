@@ -10,14 +10,18 @@ import {
 } from "react-icons/fa6";
 import {
   useGetOneArticleQuery,
-  useGetArticlesQuery
+  useGetArticlesQuery,
+  useGetCommentsQuery,
+  usePostCommentsMutation,
 } from "../redux/api/apiSlice";
-import spinner from "../Components/Spinner/spinner";
 import BlogPostCard from "../Components/BlogPostCard";
-import CommentSection from "../Components/CommentSection";
 import CommentCard from "../Components/CommentCard";
 
 function ArticlePage() {
+  const [comment, setComment] = useState("");
+  const [showCommentDialog, setShowCommentDialog] = useState(false);
+  const [handlePostComment] = usePostCommentsMutation();
+
   const [showComments, setShowComments] = useState(false);
   const { _id } = useParams();
 
@@ -31,11 +35,10 @@ function ArticlePage() {
   } = useGetOneArticleQuery(_id);
 
   const { data: articles } = useGetArticlesQuery();
-
+  const { data: comments, refetch } = useGetCommentsQuery();
   const moreAuthorArticles = articles?.blogs?.filter((blog) => {
     return blog?.author?._id === article?.blog?.author?._id;
   });
-
   const categories = article?.blog?.categories.map((category, index) => (
     <li
       className="text-xs bg-gray-200 px-3 py-2 rounded-full md:text-sm"
@@ -46,14 +49,41 @@ function ArticlePage() {
   ));
 
   const showHideComments = () => {
-    setShowComments((current)=> !current);
+    setShowComments((current) => !current);
   };
+
+  const showCommentInput = () => {
+    setShowCommentDialog(true);
+  };
+
+  const handleCloseCommentInput = (e) => {
+    e.preventDefault();
+    setShowCommentDialog(false);
+    setComment("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const articleId = _id;
+      await handlePostComment({ comment, articleId }).unwrap();
+      setComment("");
+      setShowCommentDialog(false);
+      refetch();
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const articleComments = comments?.comments?.filter((comment) => {
+    return comment?.articleId === _id;
+  });
 
   return (
     <>
       <article className="w-[100%] px-2 my-8 font-serif md:container md:mx-auto md:w-[50%] md:my-14">
         {isError && <p>{error?.data?.message}</p>}
-        {isLoading || (isFetching && <spinner />)}
+        {isLoading || (isFetching && <p>Loading....</p>)}
         <section>
           <h1 className="text-2xl leading-10 font-bold  md:text-3xl">
             {article?.blog?.title}
@@ -90,11 +120,15 @@ function ArticlePage() {
           <div className="flex gap-5">
             <div className="flex items-center gap-2">
               <FaHandsClapping className="text-xl text-lightGray" />
-              <p className="text-sm text-lightGray">23</p>
+              <p className="text-sm text-lightGray">
+                {articleComments?.length}
+              </p>
             </div>
             <div className="flex items-center gap-2">
               <FaRegComment className="text-xl text-lightGray" />
-              <p className="text-lightGray text-sm">13</p>
+              <p className="text-lightGray text-lg">
+                {articleComments?.length}
+              </p>
             </div>
           </div>
           {/* Right-side utils */}
@@ -128,19 +162,79 @@ function ArticlePage() {
         <div className="flex gap-5 px-3">
           <div className="flex items-center gap-2">
             <FaHandsClapping className="text-xl text-lightGray" />
-            <p className="text-sm text-lightGray">23</p>
+            <p className="text-sm text-lightGray">{articleComments?.length}</p>
           </div>
           <div className="flex items-center gap-2">
             <FaRegComment
               className="text-xl text-lightGray cursor-pointer"
               onClick={showHideComments}
             />
-            <p className="text-lightGray text-sm">13</p>
+            <p className="text-lightGray text-lg">{articleComments?.length}</p>
           </div>
         </div>
 
         {/* Comment section */}
-        {showComments && <CommentSection articleId={_id}/>}
+        {showComments && (
+          <div className="">
+            <div className="md:flex md:justify-between md:items-center text-white">
+              <p className="my-4 font-bold text-lg">
+                Comments {comments?.length}
+              </p>
+              <button
+                onClick={showCommentInput}
+                className="bg-blue-700 px-2 py-2 rounded-md mx-3"
+              >
+                Add comment
+              </button>
+            </div>
+
+            {/* Dialog to add comment */}
+            {showCommentDialog && (
+              <form onSubmit={handleSubmit} className="flex flex-col my-5 px-3">
+                <input
+                  type="text"
+                  placeholder="Your comment..."
+                  required
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className="outline-1 border-2 border-gray-200 rounded-sm my-2  py-[7px] px-1 placeholder:text-black placeholder:text-sm outline-blue-700"
+                />
+                {isError && (
+                  <p className="text-red-500 text-sm my-2 px-1">
+                    *{error?.data?.message}
+                  </p>
+                )}
+                <div className="my-2 space-x-5">
+                  <button
+                    onClick={handleCloseCommentInput}
+                    className="bg-blue-700 px-2 py-1 rounded-md mx-3 text-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-blue-700 px-2 py-1 rounded-md mx-3 text-white"
+                  >
+                    {isLoading ? "Posting" : "Post"}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {isLoading && <p>Loading...</p>}
+            {isSuccess && comments !== 0 ? (
+              articleComments?.map((comment) => {
+                return (
+                  <div key={comment._id}>
+                    <CommentCard comment={comment} />
+                  </div>
+                );
+              })
+            ) : (
+              <p>No comments available</p>
+            )}
+          </div>
+        )}
 
         {/* Profile modal */}
         <section className=" my-20 bg-gray-100 py-5">
