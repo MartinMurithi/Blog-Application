@@ -77,10 +77,8 @@ export const apiSlice = createApi({
       invalidatesTags: ["Articles"],
     }),
     getUserInfo: builder.query({
-      query: ()=> ({
-        url: "/user",
+      query: (id)=> `/user/${id}`,
         providesTags: ["Articles"],
-      })
     }),
     postComments: builder.mutation({
       query: (comment) => ({

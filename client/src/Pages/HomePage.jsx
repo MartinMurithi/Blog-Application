@@ -10,7 +10,6 @@ import BlogPostCard from "../Components/BlogPostCard";
 
 function Home() {
   const { isError, error, isLoading, data: articles } = useGetArticlesQuery();
-  console.log(articles);
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
 

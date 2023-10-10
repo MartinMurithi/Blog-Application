@@ -1,11 +1,11 @@
 import React from "react";
 import { useGetArticlesQuery } from "../redux/api/apiSlice";
 import BlogPostCard from "../Components/BlogPostCard";
+import Spinner from "../Components/Spinner";
 
 function BlogList() {
   const {
     isLoading,
-    isFetching,
     isSuccess,
     error,
     isError,
@@ -14,8 +14,8 @@ function BlogList() {
   
   return (
     <>
-      {isError ? <p>{error?.data?.message}</p> : null}
-      {isFetching || isLoading ? <p>Loading...</p> : null}
+      {isError && <p className="text-red-500 text-lg">{error?.data?.message}</p>}
+      {isLoading && <Spinner/>}
 
       {isSuccess && articles.length !== 0
         ? articles?.blogs?.map((blog) => {

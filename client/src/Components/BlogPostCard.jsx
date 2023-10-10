@@ -1,7 +1,7 @@
 import React from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import format from "date-fns/format";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function BlogPostCard({ blog }) {
   const categories = blog?.categories?.slice(0, 2).map((category, index) => {
@@ -35,7 +35,7 @@ function BlogPostCard({ blog }) {
               className="w-8 h-8 rounded-full"
             />
             <div>
-              <Link to={"/account"} className="text-black hover:underline">
+              <Link to={`/account/${blog?.author?._id}`} className="text-black hover:underline">
                {blog?.author?.name}
               </Link>
               <p className="text-sm text-gray-500">

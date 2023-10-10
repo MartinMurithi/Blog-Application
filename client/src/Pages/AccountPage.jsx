@@ -1,6 +1,5 @@
 import React from "react";
-import { useGetUserInfoQuery } from "../redux/api/apiSlice";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import {
   FaLocationPin,
   FaCakeCandles,
@@ -8,11 +7,17 @@ import {
   FaEnvelope,
 } from "react-icons/fa6";
 import format from "date-fns/format";
-import { useGetArticlesQuery } from "../redux/api/apiSlice";
+import {
+  useGetArticlesQuery,
+  useGetUserInfoQuery,
+} from "../redux/api/apiSlice";
+import { useSelector } from "react-redux";
 import BlogPostCard from "../Components/BlogPostCard";
 
 const AccountPage = () => {
-  const { data: user } = useGetUserInfoQuery();
+  const { _id } = useParams();
+  const { userInfo } = useSelector((state) => state?.auth);
+  const { data: user } = useGetUserInfoQuery(_id);
   const { data: articles } = useGetArticlesQuery();
 
   const skills = user?.skills?.map((skill, index) => {
@@ -37,12 +42,16 @@ const AccountPage = () => {
             alt="Profile Picture"
             className=" w-16 h-16 rounded-full my-3 md:w-24 md:h-24"
           />
-          <NavLink
-            to={"/settings"}
-            className="bg-blue-800 text-white  rounded-md text-sm px-2 py-2 ml-auto mr-4 md:px-4 md:py-2"
-          >
-            Edit profile
-          </NavLink>
+          {/* Only logged in user can see edit account infor link */}
+          {userInfo?.user?._id === _id && (
+            <NavLink
+              to={"/settings"}
+              className="bg-blue-800 text-white  rounded-md text-sm px-2 py-2 ml-auto mr-4 md:px-4 md:py-2"
+            >
+              Edit profile
+            </NavLink>
+          )}
+
           <p className="font-bold text-lg my-2 md:text-xl">{user?.name}</p>
           <p className="md:text-lg">{user?.bio}</p>
           <div className="flex flex-col  items-start my-4 gap-4 md:items-center md:justify-center md:gap-7  md:my-4 md:flex-row">
@@ -70,7 +79,6 @@ const AccountPage = () => {
               </a>
             </div>
           </div>
-
           <div className="flex flex-col gap-4 my-2 md:flex-row md:justify-between md:items-center md:gap-10 md:my-4">
             {/* Work */}
             <div>
@@ -83,7 +91,6 @@ const AccountPage = () => {
               <p>{user?.education}</p>
             </div>
           </div>
-
         </div>
         {/* {/* More user infor  */}
         <div className="w-[100%] flex-col my-2 md:w-[85%] md:flex">
@@ -104,19 +111,22 @@ const AccountPage = () => {
               <p>{user?.project}</p>
             </div>
           </div>
-          <p className="font-bold text-lg ml-1
-           mt-3 md:my-5 md:text-center md:text-2xl">Your articless</p>
+          <p
+            className="font-bold text-lg ml-1
+           mt-3 md:my-5 md:text-center md:text-2xl"
+          >
+            More articles from {user?.name}
+          </p>
           {/* Blog list */}
           <div className="w-[100%]">
             {authorArticles?.map((article) => {
               return (
-                <>
+                <div key={article._id}>
                   <BlogPostCard blog={article} key={article._id} />
-                </>
+                </div>
               );
             })}
           </div>
-          
         </div>
       </div>
     </div>

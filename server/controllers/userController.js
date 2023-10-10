@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/users");
 const validateEmail = require("../utils/emailValidator");
@@ -24,7 +25,7 @@ const registerUser = async (req, res) => {
       password: hashPassword,
     });
     await newUser.save();
-
+    generateToken(res, newUser._id);
     res
       .status(201)
       .json({ message: "User registered successfully", user: newUser });
@@ -99,8 +100,10 @@ const updateUserInfo = async (req, res) => {
 // Fetch user based on ID stored in the token
 const fetchUser = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const user = await User.findById(userId).select("-password").populate('blogs');
+    const { id: _id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(500).json({ message: `${_id} is not a valid id` });
+    const user = await User.findById(_id).select("-password");
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

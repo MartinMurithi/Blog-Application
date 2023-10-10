@@ -32,7 +32,7 @@ function App() {
           <Route path="/article/:_id" element={<ArticlePage />} />
           <Route path="/signIn" element={<SignInOptionsPage />} />
           <Route path="/register" element={<RegisterOptionsPage />} />
-          <Route path="/account" element={<AccountPage />} />
+          <Route path="/account/:_id" element={<AccountPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/readinglist" element={<ReadingListPage />} />

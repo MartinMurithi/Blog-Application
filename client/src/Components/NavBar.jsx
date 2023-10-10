@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "./Logo";
 import AccountDropdown from "./AccountDropdown";
-import { useGetUserInfoQuery } from "../redux/api/apiSlice";
 
 function NavBar() {
-  const { data: user } = useGetUserInfoQuery();
+  const location = useLocation();
   const { userInfo } = useSelector((state) => state.auth);
   const [openDropDown, setOpenDropDown] = useState(false);
-
   const openAccountDropdown = () => {
     setOpenDropDown((current) => !current);
   };
+
+  // Close dropdown menu onClick
+  const closeDropDown = () => {
+    setOpenDropDown(false);
+  }
+
+  // Close dropdown menu when url changes
+  useEffect(() => {
+    closeDropDown();
+  }, [location]);
 
   return (
     <>
@@ -21,14 +29,7 @@ function NavBar() {
         <div className=" hidden md:flex items-center space-x-6 text-sm font-serif pr-5">
           {userInfo ? (
             <>
-              <NavLink
-                to={"/about"}
-                className={"hover:border-b-4 border-green"}
-              >
-                About Us
-              </NavLink>
-
-              <NavLink
+            <NavLink
                 to={"/articles"}
                 className={"hover:border-b-4 border-green"}
               >
@@ -47,7 +48,7 @@ function NavBar() {
                 className="border-none outline-none"
               >
                 <img
-                  src={`http://localhost:5000/${user?.profileImage}`}
+                  src={`http://localhost:5000/${userInfo?.user?.profileImage}`}
                   alt="Profile"
                   className="w-10 h-10 rounded-full"
                 />
@@ -101,22 +102,25 @@ function NavBar() {
         <div className="md:hidden">
           {userInfo ? (
             <>
-              <NavLink
-                to={"/articles"}
-                className={"hover:border-b-4  border-green px-2"}
+              <button
+                onClick={openAccountDropdown}
+                className="border-none outline-none"
               >
-                Articles
-              </NavLink>
-
-              <NavLink
-                to={"/write"}
-                className={"hover:border-b-4 border-green px-2"}
-              >
-                Write
-              </NavLink>
+                <img
+                  src={`http://localhost:5000/${userInfo?.user?.profileImage}`}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full"
+                />
+              </button>
             </>
           ) : (
-            <>
+              <>
+                <NavLink
+                to={"/signIn"}
+                className={"hover:border-b-4 border-green"}
+              >
+                Sign In
+              </NavLink>
               <NavLink
                 to={"/register"}
                 className="bg-green rounded-full px-4 py-2 text-white text-sm "
@@ -127,14 +131,10 @@ function NavBar() {
           )}
         </div>
       </nav>
-      {openDropDown && <AccountDropdown />}
+      {openDropDown && <AccountDropdown closeDropDown={closeDropDown} />}
     </>
   );
 }
 
 export default NavBar;
-{
-  /* <div className="text-1xl cursor-pointer">
-          <AiOutlineMenu />
-        </div> */
-}
+

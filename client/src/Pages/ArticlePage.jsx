@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import format from "date-fns/format";
 import {
   FaHandsClapping,
@@ -18,6 +18,7 @@ import BlogPostCard from "../Components/BlogPostCard";
 import CommentCard from "../Components/CommentCard";
 
 function ArticlePage() {
+  const commentSection = useRef(null);
   const [comment, setComment] = useState("");
   const [showCommentDialog, setShowCommentDialog] = useState(false);
   const [handlePostComment] = usePostCommentsMutation();
@@ -79,6 +80,12 @@ function ArticlePage() {
     return comment?.articleId === _id;
   });
 
+  const scrollToCommentSection = () => {
+    if (commentSection.current) {
+      commentSection.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <article className="w-[100%] px-2 my-8 font-serif md:container md:mx-auto md:w-[50%] md:my-14">
@@ -101,9 +108,12 @@ function ArticlePage() {
             {/* Name, follow */}
             <div className="flex flex-col">
               <div className="flex gap-2 m-1 items-center cursor-pointer">
-                <h5 className="text-sm font-semibold">
+                <Link
+                  to={`/account/${article?.blog?.author?._id}`}
+                  className="text-black hover:underline text-sm font-semibold"
+                >
                   {article?.blog?.author?.name}
-                </h5>
+                </Link>
                 <p className="text-[15px] text-green">{` . Follow`}</p>
               </div>
               <div className="flex gap-2 items-center">
@@ -125,7 +135,13 @@ function ArticlePage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <FaRegComment className="text-xl text-lightGray" />
+              <FaRegComment
+                className="text-xl text-lightGray cursor-pointer"
+                onClick={() => {
+                  scrollToCommentSection();
+                  showHideComments();
+                }}
+              />
               <p className="text-lightGray text-lg">
                 {articleComments?.length}
               </p>
@@ -175,7 +191,7 @@ function ArticlePage() {
 
         {/* Comment section */}
         {showComments && (
-          <div className="">
+          <div className="" ref={commentSection}>
             <div className="md:flex md:justify-between md:items-center text-white">
               <p className="my-4 font-bold text-lg">
                 Comments {comments?.length}
@@ -251,9 +267,16 @@ function ArticlePage() {
             </button>
           </div>
 
-          <h5 className="my-3 mx-3 font-bold text-lg md:text-xl">
-            Written by {article?.blog?.author?.name}
+          <h5 className="text-black my-3 mx-3 font-bold">
+            Written by
+            <Link
+              to={`/account/${article?.blog?.author?._id}`}
+              className="text-black hover:underline my-3 mx-3 font-bold "
+            >
+            {article?.blog?.author?.name}
+            </Link>
           </h5>
+
           <p className="mx-3">3.2k Followers</p>
           <p className="my-2 mx-3 md:text-lg">{article?.blog?.author?.bio}</p>
         </section>
