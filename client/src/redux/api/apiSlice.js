@@ -77,7 +77,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Articles"],
     }),
     getUserInfo: builder.query({
-      query: (id)=> `/user/${id}`,
+      query: (_id)=> `/user/${_id}`,
         providesTags: ["Articles"],
     }),
     postComments: builder.mutation({
@@ -94,6 +94,28 @@ export const apiSlice = createApi({
         providesTags: ["Articles"],
       })
     }),
+    saveArticle: builder.mutation({
+      query: (article) => ({
+        url: "/save",
+        method: "POST",
+        body: article
+      }),
+      invalidatesTags: ["Articles"]
+    }),
+    deleteSavedArticle: builder.mutation({
+      query: (_id) => ({
+        url: "/deleteSavedArticle",
+        method: "DELETE",
+        body: _id
+      }),
+      invalidatesTags: ["Articles"]
+    }),
+    getSavedArticles: builder.query({
+      query: () => ({
+        url: `/savedArticles`,
+        providesTags: ["Articles"]
+      })
+    })
   })
 });
 
@@ -109,5 +131,8 @@ export const {
   useUpdateUserInfoMutation,
   useGetUserInfoQuery,
   useGetCommentsQuery,
-  usePostCommentsMutation
+  usePostCommentsMutation,
+  useSaveArticleMutation,
+  useDeleteSavedArticleMutation,
+  useGetSavedArticlesQuery
 } = apiSlice;

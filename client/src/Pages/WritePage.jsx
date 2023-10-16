@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 function Write() {
   const animatedSelectComponent = makeAnimated();
   const navigate = useNavigate();
-  const [createArticleHandler, { isError, error, isSuccess }] =
+  const [createArticleHandler, { isError, error, isSuccess, isLoading }] =
     useCreateArticleMutation();
 
   const [coverImagePreview, setCoverImagePreview] = useState("");
@@ -162,8 +162,9 @@ function Write() {
             type="submit"
             className="bg-green rounded-sm px-6 py-2 text-white text-sm ml-3 md:px-8"
           >
-            Publish
+            {isLoading ? 'Publishing' : 'Publish'}
           </button>
+          {isError && <p className="text-red-500 text-sm">{ error.message }</p>}
         </form>
       </article>
     </>
@@ -171,3 +172,4 @@ function Write() {
 }
 
 export default Write;
+

@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./Components/PrivateRoute";
 import { useEffect } from "react";
+import AccountPageOwner from "./Pages/AccountPageOwner";
 
 function App() {
 
@@ -33,9 +34,10 @@ function App() {
           <Route path="/signIn" element={<SignInOptionsPage />} />
           <Route path="/register" element={<RegisterOptionsPage />} />
           <Route path="/account/:_id" element={<AccountPage />} />
+          <Route path="/useraccount" element={<AccountPageOwner />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/readinglist" element={<ReadingListPage />} />
+          {/* <Route path="/readinglist" element={<ReadingListPage />} /> */}
           <Route path="" element={<PrivateRoute/>}>
             <Route path="/write" element={<WritePage />} />
           </Route>

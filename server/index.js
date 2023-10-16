@@ -7,6 +7,7 @@ const dbConnect = require("./config/dbConnect");
 const blogRouter = require("./routes/blogRoute");
 const userRouter = require("./routes/userRoute");
 const commentsRouter = require("./routes/commentRoute");
+const readingListRouter = require("./routes/readingListRouter");
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -25,6 +26,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", blogRouter);
 app.use("/", userRouter);
 app.use("/", commentsRouter);
+app.use("/", readingListRouter);
 
 
 app.all("*", (req, res) => {

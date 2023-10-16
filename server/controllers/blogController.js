@@ -109,7 +109,7 @@ const updateBlog = async (req, res) => {
         new: true,
       }
     );
-    res.status(200).json({
+    res.status(201).json({
       message: "Blog updated successfully",
       blog: blog,
     });
@@ -133,7 +133,7 @@ const deleteBlog = async (req, res) => {
       return res.status(500).json({ message: `${_id} is not a valid id` });
 
     const blog = await blogModel.findByIdAndDelete(_id);
-    res.status(200).json({
+    res.status(201).json({
       message: "Blog deleted successfully",
       blog: blog,
     });

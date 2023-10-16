@@ -4,14 +4,14 @@ const blogSchema = mongoose.Schema(
   {
     coverImage: {
       type: String,
-      required: true
+      required: true,
     },
     title: {
       type: String,
       required: [true, "Title is required"],
     },
     summary: {
-      type: String
+      type: String,
     },
     categories: {
       type: Array,
@@ -23,15 +23,19 @@ const blogSchema = mongoose.Schema(
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      ref: "User",
     },
     comments: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment'
-    }
+      ref: "Comment",
+    },
+    likes: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Likes",
+    },
   },
   { timestamps: true }
 );
 
-const blogModal = mongoose.model('Blog', blogSchema);
+const blogModal = mongoose.model("Blog", blogSchema);
 module.exports = blogModal;

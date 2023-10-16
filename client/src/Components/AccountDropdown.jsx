@@ -11,6 +11,7 @@ const AccountDropdown = ({closeDropDown}) => {
   const [handleLogOutApiCall, { isLoading }] = useLogoutUserMutation();
 
   const _id = userInfo?.user?._id;
+  console.log(userInfo?.user?._id);
   
   const handleLogOut = async () => {
     try {
@@ -25,10 +26,10 @@ const AccountDropdown = ({closeDropDown}) => {
   return (
     <div className="flex flex-col items-center ">
       <div className="w-[100%] flex flex-col items-center justify-center gap-4 pl-4 py-3 shadow-xl absolute bg-veryLightGray">
-        <NavLink to={`/account/${_id}`} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Account</NavLink>
+        <NavLink to={"/useraccount"} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Account</NavLink>
         <NavLink to={"/dashboard"} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Dashboard</NavLink>
         <NavLink to={"/write"} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Write</NavLink>
-        <NavLink to={"/readinglist"} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Reading List</NavLink>
+        {/* <NavLink to={"/readinglist"} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Reading List</NavLink> */}
         <NavLink to={"/settings"} onClick={closeDropDown} className="hover:border-green hover:border-b-2">Settings</NavLink>
         <button onClick={() => { handleLogOut(); closeDropDown(); }} className="border-none outline-none hover:border-green hover:border-b-2">
           Logout
