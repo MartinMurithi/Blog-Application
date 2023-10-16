@@ -1,9 +1,16 @@
 import React from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import format from "date-fns/format";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useSaveArticleMutation } from "../redux/api/apiSlice";
+import { useSelector } from "react-redux";
 
 function BlogPostCard({ blog }) {
+  const { userInfo } = useSelector((state) => state.auth);
+  const [saveArticleApiCall] = useSaveArticleMutation();
+  const articleId = blog?._id;
+  const readerId = userInfo?.user?._id;
+
   const categories = blog?.categories?.slice(0, 2).map((category, index) => {
     return (
       <li className="text-xs bg-gray-200 px-3 py-1 rounded-full " key={index}>
@@ -11,6 +18,12 @@ function BlogPostCard({ blog }) {
       </li>
     );
   });
+
+  const saveArticle = async () => {
+    // fetch user id and article id
+    const savedArticle = await saveArticleApiCall({ articleId, readerId }).unwrap();
+    // console.log(savedArticle);
+  }
 
   return (
     <div className=" md:container md:mx-auto md:max-w-[70%] md:flex md:items-center md:justify-center">
@@ -57,7 +70,7 @@ function BlogPostCard({ blog }) {
           {/* Category List and save button*/}
           <div className="flex justify-between items-center mt-5">
             <ul className="flex items-center gap-3">{categories}</ul>
-            <FaRegBookmark />
+            <FaRegBookmark onClick={saveArticle} />
           </div>
         </div>
       </div>

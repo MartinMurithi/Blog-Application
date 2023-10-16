@@ -3,10 +3,13 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "./Logo";
 import AccountDropdown from "./AccountDropdown";
+import {useGetUserInfoQuery } from "../redux/api/apiSlice";
 
 function NavBar() {
   const location = useLocation();
   const { userInfo } = useSelector((state) => state.auth);
+  const { data: user } = useGetUserInfoQuery(userInfo?.user?._id || userInfo?._id);
+
   const [openDropDown, setOpenDropDown] = useState(false);
   const openAccountDropdown = () => {
     setOpenDropDown((current) => !current);
@@ -15,7 +18,7 @@ function NavBar() {
   // Close dropdown menu onClick
   const closeDropDown = () => {
     setOpenDropDown(false);
-  }
+  };
 
   // Close dropdown menu when url changes
   useEffect(() => {
@@ -29,7 +32,7 @@ function NavBar() {
         <div className=" hidden md:flex items-center space-x-6 text-sm font-serif pr-5">
           {userInfo ? (
             <>
-            <NavLink
+              <NavLink
                 to={"/articles"}
                 className={"hover:border-b-4 border-green"}
               >
@@ -48,7 +51,7 @@ function NavBar() {
                 className="border-none outline-none"
               >
                 <img
-                  src={`http://localhost:5000/${userInfo?.user?.profileImage}`}
+                  src={`http://localhost:5000/${user?.profileImage}`}
                   alt="Profile"
                   className="w-10 h-10 rounded-full"
                 />
@@ -101,21 +104,27 @@ function NavBar() {
         {/* Mobile navbar */}
         <div className="md:hidden">
           {userInfo ? (
-            <>
+            <div className="flex items-center gap-5">
+              <NavLink
+                to={"/write"}
+                className={"hover:border-b-4 border-green"}
+              >
+                Write
+              </NavLink>
               <button
                 onClick={openAccountDropdown}
                 className="border-none outline-none"
               >
                 <img
-                  src={`http://localhost:5000/${userInfo?.user?.profileImage}`}
+                  src={`http://localhost:5000/${user?.profileImage}`}
                   alt="Profile"
-                  className="w-10 h-10 rounded-full"
+                  className="w-8 h-8 rounded-full"
                 />
               </button>
-            </>
+            </div>
           ) : (
-              <>
-                <NavLink
+            <>
+              <NavLink
                 to={"/signIn"}
                 className={"hover:border-b-4 border-green"}
               >
@@ -137,4 +146,3 @@ function NavBar() {
 }
 
 export default NavBar;
-

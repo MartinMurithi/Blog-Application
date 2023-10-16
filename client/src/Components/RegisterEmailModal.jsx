@@ -8,7 +8,8 @@ import { useDispatch } from "react-redux";
 const RegisterEmailModal = forwardRef((props, ref) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [handleRegister, { isError, error, isLoading }] = useRegisterUserMutation();
+  const [handleRegister, { isError, error, isLoading }] =
+    useRegisterUserMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,10 +35,8 @@ const RegisterEmailModal = forwardRef((props, ref) => {
       navigate("/articles");
     } catch (err) {
       console.log(err?.data?.error);
-      // console.log(err.message || error);
     }
   };
-
   return (
     <>
       <dialog
@@ -101,3 +100,4 @@ const RegisterEmailModal = forwardRef((props, ref) => {
   );
 });
 export default RegisterEmailModal;
+

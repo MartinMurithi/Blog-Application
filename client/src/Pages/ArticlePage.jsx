@@ -14,10 +14,12 @@ import {
   useGetCommentsQuery,
   usePostCommentsMutation,
 } from "../redux/api/apiSlice";
+import { useSelector } from "react-redux";
 import BlogPostCard from "../Components/BlogPostCard";
 import CommentCard from "../Components/CommentCard";
 
 function ArticlePage() {
+  const { userInfo } = useSelector((state) => state.auth);
   const commentSection = useRef(null);
   const [comment, setComment] = useState("");
   const [showCommentDialog, setShowCommentDialog] = useState(false);
@@ -196,12 +198,14 @@ function ArticlePage() {
               <p className="my-4 font-bold text-lg">
                 Comments {comments?.length}
               </p>
-              <button
-                onClick={showCommentInput}
-                className="bg-blue-700 px-2 py-2 rounded-md mx-3"
-              >
-                Add comment
-              </button>
+              {userInfo && (
+                <button
+                  onClick={showCommentInput}
+                  className="bg-blue-700 px-2 py-2 rounded-md mx-3"
+                >
+                  Add comment
+                </button>
+              )}
             </div>
 
             {/* Dialog to add comment */}
@@ -238,6 +242,7 @@ function ArticlePage() {
             )}
 
             {isLoading && <p>Loading...</p>}
+            <p>Comments</p>
             {isSuccess && comments !== 0 ? (
               articleComments?.map((comment) => {
                 return (
@@ -273,7 +278,7 @@ function ArticlePage() {
               to={`/account/${article?.blog?.author?._id}`}
               className="text-black hover:underline my-3 mx-3 font-bold "
             >
-            {article?.blog?.author?.name}
+              {article?.blog?.author?.name}
             </Link>
           </h5>
 

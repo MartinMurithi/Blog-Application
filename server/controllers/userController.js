@@ -78,13 +78,13 @@ const updateUserInfo = async (req, res) => {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        profileImage: req.file ? req.file.path : undefined,
+        profileImage: req.file.path,
         bio: req.body.bio,
-        skills: JSON.parse(req.body.skills) || req.body.skills,
+        skills: req.body.skills,
         work: req.body.work,
         education: req.body.education,
         websiteURL: req.body.websiteURL,
-        technologies: JSON.parse(req.body.technologies || req.body.technologies),
+        technologies: req.body.technologies,
         project: req.body.project,
         location: req.body.location,
       }
@@ -101,6 +101,7 @@ const updateUserInfo = async (req, res) => {
 const fetchUser = async (req, res) => {
   try {
     const { id: _id } = req.params;
+    console.log(_id);
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(500).json({ message: `${_id} is not a valid id` });
     const user = await User.findById(_id).select("-password");

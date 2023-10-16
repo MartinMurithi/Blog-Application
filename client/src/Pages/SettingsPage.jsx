@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useUpdateUserInfoMutation } from "../redux/api/apiSlice";
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from "../redux/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../redux/api/authSlice";
 import { toast } from "react-toastify";
@@ -34,11 +34,11 @@ const SettingsPage = () => {
     formData.append("name", user.name);
     formData.append("email", user.email);
     formData.append("bio", user.bio);
-    formData.append("skills", JSON.stringify(user.skills));
+    formData.append("skills", user.skills);
     formData.append("education", user.education);
     formData.append("work", user.work);
     formData.append("websiteURL", user.websiteURL);
-    formData.append("technologies", JSON.stringify(user.technologies));
+    formData.append("technologies", user.technologies);
     formData.append("project", user.project);
     formData.append("location", user.location);
     formData.append("profileImage", user.profileImage);
@@ -61,7 +61,7 @@ const SettingsPage = () => {
       {/* Form container */}
       <div className="w-[90%] flex flex-col md:w-[50%]">
         <p className="text-blue-700 font-bold text-xl mt-4 text-start md:text-[30px] md:mt-8 md:mb-5 ">
-          {`@${user?.username || user?.email} `}
+          {`${userInfo?.username || user?.email} `}
         </p>
 
         {/* Collect basic user infor */}
@@ -180,6 +180,7 @@ const SettingsPage = () => {
               name="skills"
               placeholder="E.g Web development, App development, cyber security"
               maxLength={100}
+              required
               value={user?.skills || ''}
               onChange={(e) => setUser({ ...user, skills: e.target.value })}
               className="mx-1 outline-1 border-2 border-gray-200 outline-blue-700 rounded-md my-2  py-[5px] px-1 placeholder:text-black placeholder:text-sm "
@@ -190,6 +191,7 @@ const SettingsPage = () => {
             <textarea
               id="technologies"
               name="technologies"
+              required
               placeholder="Any programming languages, frameworks, etc. to hightlight"
               value={user?.technologies || ''}
               onChange={(e) =>

@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import {
   FaLocationPin,
   FaCakeCandles,
@@ -14,15 +14,17 @@ import {
 import { useSelector } from "react-redux";
 import BlogPostCard from "../Components/BlogPostCard";
 
-const AccountPage = () => {
-  const { _id } = useParams();
-  // const { userInfo } = useSelector((state) => state?.auth);
-  const { data: user } = useGetUserInfoQuery(_id);
+const AccountPageOwner = () => {
+  const { userInfo } = useSelector((state) => state?.auth);
+  const { data: user } = useGetUserInfoQuery(userInfo?.user?._id  || userInfo?._id);
   const { data: articles } = useGetArticlesQuery();
+
+  console.log(userInfo?._id || userInfo?.user?._id);
 
   const skills = user?.skills?.map((skill, index) => {
     return <li key={index}>{skill}</li>;
   });
+  console.log(user);
 
   const technologies = user?.technologies?.map((tech, index) => {
     return <li key={index}>{tech}</li>;
@@ -35,15 +37,26 @@ const AccountPage = () => {
   return (
     <div className="mx-2">
       <div className="flex flex-col justify-center items-center">
-        {/* Profile details section */}
+        {/* Displays logged in user info */}
         <div className="w-[100%] flex flex-col ml- md:my-7 md:w-[85%] md:border-2 md:shadow-sm md:items-center">
           <img
             src={`http://localhost:5000/${user?.profileImage}`}
             alt="Profile Picture"
             className=" w-16 h-16 rounded-full my-3 md:w-24 md:h-24"
           />
+          {/* Only logged in user can see edit account infor link */}
+          {/* {userInfo?.user?._id === _id && ( */}
+            <NavLink
+              to={"/settings"}
+              className="bg-blue-800 text-white  rounded-md text-sm px-2 py-2 ml-auto mr-4 md:px-4 md:py-2"
+            >
+              Edit profile
+            </NavLink>
+          {/* )} */}
 
-          <p className="font-bold text-lg my-2 md:text-xl">{user?.name}</p>
+          <p className="font-bold text-lg my-2 md:text-xl">
+            {user?.name}
+          </p>
           <p className="md:text-lg">{user?.bio}</p>
           <div className="flex flex-col  items-start my-4 gap-4 md:items-center md:justify-center md:gap-7  md:my-4 md:flex-row">
             <div className="flex gap-2 items-center">
@@ -124,4 +137,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default AccountPageOwner;
