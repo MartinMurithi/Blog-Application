@@ -40,15 +40,18 @@ const getBlogs = async (req, res) => {
           select: ["createdAt", "name", "profileImage"],
         }
       );
+      console.log(blogs);
 
     res.status(200).json({
       count: blogs.length,
       blogs: blogs,
     });
+    console.log(blogs);
   } catch (err) {
     res.status(500).json({
       message: err.message,
     });
+    console.log(err);
   }
 };
 

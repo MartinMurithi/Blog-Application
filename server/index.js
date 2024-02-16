@@ -9,7 +9,8 @@ const userRouter = require("./routes/userRoute");
 const commentsRouter = require("./routes/commentRoute");
 const readingListRouter = require("./routes/readingListRouter");
 const cookieParser = require("cookie-parser");
-const PORT = process.env.PORT || 4000;
+const { getBlogs } = require("./controllers/blogController");
+const PORT = process.env.PORT || 4040;
 const app = express();
 
 const corsOptions = {
@@ -28,7 +29,7 @@ app.use("/", userRouter);
 app.use("/", commentsRouter);
 app.use("/", readingListRouter);
 
-
+getBlogs();
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
